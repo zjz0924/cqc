@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wow.common.dao.ContactDao">
+	<resultMap id="BaseResultMap" type="cn.wow.common.domain.Contact">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="address" jdbcType="VARCHAR" property="address" />
+		<result column="url" jdbcType="VARCHAR" property="url" />
+		<result column="phone" jdbcType="VARCHAR" property="phone" />
+		<result column="fax" jdbcType="VARCHAR" property="fax" />
+	</resultMap>
+
+	<sql id="base_columns">
+		id, name, address, url, phone, fax
+	</sql>
+
+	<select id="selectOne" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select <include refid="base_columns" /> from contact where id = #{id,jdbcType=BIGINT}
+	</select>
+
+	<update id="update" parameterType="cn.wow.common.domain.Contact">
+		update contact set
+		name = #{name,jdbcType=VARCHAR},
+		address = #{address,jdbcType=VARCHAR},
+		url = #{url,jdbcType=VARCHAR},
+		phone = #{phone,jdbcType=VARCHAR},
+		fax = #{fax,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+</mapper>

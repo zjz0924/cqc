@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wow.common.dao.NewsDao">
+	<resultMap id="BaseResultMap" type="cn.wow.common.domain.News">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="title" jdbcType="VARCHAR" property="title" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="creator" jdbcType="BIGINT" property="creator" />
+		<result column="content" jdbcType="LONGVARCHAR" property="content" />
+		<result column="type" jdbcType="BIGINT" property="type" />
+		<association property="newsType" javaType="cn.wow.common.domain.NewsType">
+	    	 <id property="id" column="t_id" />
+	    	 <result property="name" column="name" />
+	         <result property="isShow" column="is_show" />  
+	    </association>
+	</resultMap>
+	
+	<sql id="base_columns">
+		n.id, n.title, n.create_time, n.creator, n.content, n.type, t.id t_id, t.name, t.is_show
+	</sql>
+	
+	<select id="selectOne" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select <include refid="base_columns" /> from news n left join news_type t on t.id = n.type where n.id = #{id,jdbcType=BIGINT}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from sound_pic where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	<insert id="insert" parameterType="cn.wow.common.domain.News">
+		insert into news (title, create_time, creator, content, type)
+			values (#{title,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=BIGINT}, #{content,jdbcType=LONGVARCHAR},#{type,jdbcType=BIGINT})
+	</insert>
+	
+	<update id="update" parameterType="cn.wow.common.domain.News">
+		update news
+		<set>
+			<if test="title != null">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=BIGINT},
+			</if>
+			<if test="creator != null">
+				creator = #{creator,jdbcType=BIGINT},
+			</if>
+			content = #{content,jdbcType=LONGVARCHAR},
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	
+	<select id="selectAllList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+	  	select 
+	    <include refid="base_columns" />
+	      from news n left join news_type t on t.id = n.type
+	     <where>
+			  <if test="title != null and title != ''" >
+		        and n.title like concat('%', #{title,jdbcType=VARCHAR}, '%') 
+		      </if>
+		      
+		      <if test="startCreateTime != null and startCreateTime != ''">  
+		    	and n.create_time &gt;= #{startCreateTime, jdbcType=TIMESTAMP}
+		      </if>
+		      
+		      <if test="endCreateTime != null and endCreateTime != ''">  
+		    	and n.create_time &lt;= #{endCreateTime, jdbcType=TIMESTAMP}
+		      </if>
+		      
+		      <if test="creator != null and creator != ''" >
+		        and n.creator = #{creator,jdbcType=BIGINT}
+		      </if>
+		      
+		      <if test="type != null and type != ''" >
+		        and n.type = #{type,jdbcType=BIGINT}
+		      </if>
+	      </where>
+	      
+		  <choose>
+	  		<when test="custom_order_sql != null">
+	  			order by ${custom_order_sql}
+	  		</when>
+	  		<otherwise>
+	  			order by n.id desc
+	  		</otherwise>
+	 	 </choose>
+  </select>
+	
+</mapper>

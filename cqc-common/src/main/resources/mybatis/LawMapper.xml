@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wow.common.dao.LawDao">
+	<resultMap id="BaseResultMap" type="cn.wow.common.domain.Law">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="title" jdbcType="VARCHAR" property="title" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="creator" jdbcType="BIGINT" property="creator" />
+		<result column="content" jdbcType="LONGVARCHAR" property="content" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+	</resultMap>
+	
+	<sql id="base_columns">
+		id, title, create_time, creator, content, type
+	</sql>
+	
+	<select id="selectOne" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select <include refid="base_columns" /> from law where id = #{id,jdbcType=BIGINT}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from law where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	<insert id="insert" parameterType="cn.wow.common.domain.Law">
+		insert into law (title, create_time, creator, content, type)
+			values (#{title,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=BIGINT},
+			 #{content,jdbcType=LONGVARCHAR}, #{type,jdbcType=INTEGER})
+	</insert>
+	
+	<update id="update" parameterType="cn.wow.common.domain.Law">
+		update law
+		<set>
+			<if test="title != null">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="creator != null">
+				creator = #{creator,jdbcType=BIGINT},
+			</if>
+			content = #{content,jdbcType=LONGVARCHAR},
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	
+	<select id="selectAllList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+	  	select 
+	    <include refid="base_columns" />
+	      from law
+	     <where>
+			  <if test="title != null and title != ''" >
+		        and title like concat('%', #{title,jdbcType=VARCHAR}, '%') 
+		      </if>
+		      
+		      <if test="startCreateTime != null and startCreateTime != ''">  
+		    	and create_time &gt;= #{startCreateTime, jdbcType=TIMESTAMP}
+		      </if>
+		      
+		      <if test="endCreateTime != null and endCreateTime != ''">  
+		    	and create_time &lt;= #{endCreateTime, jdbcType=TIMESTAMP}
+		      </if>
+		      
+		      <if test="creator != null and creator != ''" >
+		        and creator = #{creator,jdbcType=BIGINT}
+		      </if>
+		      
+		      <if test="type != null and type != ''" >
+		        and type = #{type,jdbcType=INTEGER}
+		      </if>
+	      </where>
+	      
+		  <choose>
+	  		<when test="custom_order_sql != null">
+	  			order by ${custom_order_sql}
+	  		</when>
+	  		<otherwise>
+	  			order by id desc
+	  		</otherwise>
+	 	 </choose>
+  </select>
+	
+</mapper>
