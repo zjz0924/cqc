@@ -1,8 +1,6 @@
 package cn.wow.support.web;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,10 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.wow.common.domain.Account;
-import cn.wow.common.domain.Member;
+import cn.wow.common.domain.Menu;
 import cn.wow.common.service.AccountService;
-import cn.wow.common.service.MemberService;
-import cn.wow.common.utils.pagination.PageMap;
+import cn.wow.common.service.MenuService;
 import cn.wow.support.utils.Contants;
 
 /**
@@ -29,14 +26,18 @@ public class IndexController {
 	@Autowired
 	private AccountService accountService;
 	@Autowired
-	private MemberService memberService;
+	private MenuService menuService;
+	
 	
 	@RequestMapping(value = "/index")
 	public String index(HttpServletRequest request, Model model) {
 		Account currentAccount = (Account) request.getSession().getAttribute(Contants.CURRENT_ACCOUNT);
 		
+		List<Menu> menuList = menuService.getMenuList();
+		
 		model.addAttribute("currentAccount", currentAccount);
-		return "sys/index";
+		model.addAttribute("menuList", menuList);
+		return "index/index";
 	}
 
 	
@@ -44,17 +45,7 @@ public class IndexController {
 	public String main(HttpServletRequest request, Model model) {
 		Account currentAccount = (Account) request.getSession().getAttribute(Contants.CURRENT_ACCOUNT);
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String loginTime = sdf.format(request.getSession().getCreationTime());
-		
-		Map<String, Object> map = new PageMap(false);
-		List<Member> memberList = memberService.selectAllList(map);
-		int memberNum = memberList != null ? memberList.size(): 0;
-		
-		model.addAttribute("currentAccount", currentAccount);
-		model.addAttribute("loginTime", loginTime);
-		model.addAttribute("memberNum", memberNum);
-		return "sys/main";
+		return "index/main";
 	}
 	
 	

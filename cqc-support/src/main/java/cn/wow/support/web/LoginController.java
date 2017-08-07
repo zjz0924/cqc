@@ -71,7 +71,7 @@ public class LoginController {
 			}
 			model.addAttribute("error", error);
 		}
-		return "sys/login";
+		return "common/login";
 	}
 	
 	
