@@ -9,11 +9,12 @@
 		<result column="p_id" property="pId" jdbcType="BIGINT" />
 		<result column="sort_num" property="sortNum" jdbcType="INTEGER" />
 		<result column="is_parent" property="isParent" jdbcType="CHAR" />
+		<result column="alias" property="alias" jdbcType="VARCHAR" />
 		<collection property="subList" javaType="ArrayList" column="id" ofType="Attachment"  select="cn.wow.common.dao.MenuDao.getSubList"/>
 	</resultMap>
 	
 	<sql id="base_columns">
-		id, name, url, logo, p_id, sort_num, is_parent
+		id, name, url, logo, p_id, sort_num, is_parent,alias
 	</sql>
 	
 	<select id="getMenuList" resultMap="BaseResultMap">

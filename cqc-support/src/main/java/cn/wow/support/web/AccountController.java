@@ -26,8 +26,8 @@ import cn.wow.support.utils.Contants;
  * @author zhenjunzhuo 2016-12-20
  */
 @Controller
-@RequestMapping(value = "accountController")
-public class AccountController extends CommonController {
+@RequestMapping(value = "account")
+public class AccountController extends AbstractController {
 
 	Logger logger = LoggerFactory.getLogger(AccountController.class);
 

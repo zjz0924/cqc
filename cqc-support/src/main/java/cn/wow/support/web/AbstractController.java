@@ -21,7 +21,7 @@ import cn.wow.support.utils.Contants;
  * @author zhenjunzhuo
  * 2017-1-5
  */
-public class CommonController {
+public class AbstractController {
 	
 	// 照片上传根路径
 	@Value("${img.root.url}")

@@ -11,7 +11,7 @@
 	
 	<script type="text/javascript">
 		function goTo(url){
-			window.location.href = "${ctx}/accountController/" + url;
+			window.location.href = "${ctx}/account/" + url;
 		}
 	</script>
 </head>
@@ -22,7 +22,7 @@
 		<div class="col-lg-12">
 			<ol class="breadcrumb">
 				<li><i class="fa fa-home"></i>系统管理</li>
-				<li><i class="fa fa-user"></i><a href="${ctx}/accountController/list">用户管理</a></li>
+				<li><i class="fa fa-user"></i><a href="${ctx}/account/list">用户管理</a></li>
 			</ol>
 		</div>
 	</div>
@@ -39,7 +39,7 @@
 				</div>
 
 				<div class="panel-body">
-					<form id="queryForm" name="queryForm" action="${ctx}/accountController/list" method="post">
+					<form id="queryForm" name="queryForm" action="${ctx}/account/list" method="post">
 						<table class="queryTable">
 							<tr>
 								<td class="labelTd">用户名</td>

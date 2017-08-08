@@ -18,6 +18,8 @@ public class Menu {
     private String isParent;
     
     private List<Menu> subList;
+    //菜单别名，用来设置权限，必须唯一
+    private String alias;
 
     public Long getId() {
         return id;
@@ -82,6 +84,12 @@ public class Menu {
 	public void setSubList(List<Menu> subList) {
 		this.subList = subList;
 	}
-	
-	
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
 }

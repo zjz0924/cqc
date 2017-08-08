@@ -11,8 +11,8 @@
 		
 	    <%@include file="../common/source.jsp"%>
 		<script src="${ctx}/resources/js/jquery-2.1.1.min.js"></script>
-		<script src="${ctx}/resources/js/core.min.js"></script>
-		<script src="${ctx}/resources/js/bootstrap.min.js"></script>
+		<script src="${ctx}/resources/frame/js/core.min.js"></script>
+		<script src="${ctx}/resources/frame/js/bootstrap.min.js"></script>
 		
 		<script type="text/javascript">
 			$(function(){
@@ -93,13 +93,13 @@
 											<a href="javascript:void(0)"><i class="${vo.logo}"></i><span class="text">${vo.name}</span> <span class="fa fa-angle-down pull-right"></span></a>
 											<ul class="nav sub">	
 												<c:forEach items="${vo.subList}" var="subVo">
-													<li><a href="javascript:void(0)" onclick="openFrame(${subVo.url})"><i class="${subVo.logo}"></i><span class="text">${subVo.name}</span></a></li>
+													<li><a href="javascript:void(0)" onclick="openFrame('${subVo.url}')"><i class="${subVo.logo}"></i><span class="text">${subVo.name}</span></a></li>
 												</c:forEach>								
 											</ul>
 										</li>
 									</c:when>
 									<c:otherwise>
-										<li><a href="javascript:void(0)" onclick="openFrame(${vo.url})"><i class="${vo.logo}"></i><span class="text">${vo.name}</span></a></li>
+										<li><a href="javascript:void(0)" onclick="openFrame('${vo.url}')"><i class="${vo.logo}"></i><span class="text">${vo.name}</span></a></li>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>

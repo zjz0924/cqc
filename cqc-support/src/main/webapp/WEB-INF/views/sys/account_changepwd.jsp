@@ -39,7 +39,7 @@
 			}
 			
 			$.ajax({
-				url: "${ctx}/accountController/updatePwd?date=" + new Date(),
+				url: "${ctx}/account/updatePwd?date=" + new Date(),
 				data: {
 					oldPwd: oldPwd,
 					newPwd: newPwd
