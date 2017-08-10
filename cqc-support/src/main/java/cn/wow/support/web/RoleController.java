@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.wow.common.domain.Menu;
 import cn.wow.common.domain.Role;
+import cn.wow.common.domain.RolePermission;
 import cn.wow.common.service.MenuService;
+import cn.wow.common.service.RolePermissionService;
 import cn.wow.common.service.RoleService;
 import cn.wow.common.utils.AjaxVO;
 import cn.wow.common.utils.pagination.PageMap;
@@ -32,6 +34,8 @@ public class RoleController extends AbstractController {
 	private RoleService roleService;
 	@Autowired
 	private MenuService menuService;
+	@Autowired
+	private RolePermissionService rolePermissionService;
 
 	@RequestMapping(value = "/list")
 	public String list(HttpServletRequest httpServletRequest, Model model) {
@@ -48,6 +52,7 @@ public class RoleController extends AbstractController {
 
 		try {
 			Map<String, Object> map = new PageMap(false);
+			map.put("custom_order_sql", "name asc");
 			if (StringUtils.isNotBlank(roleName)) {
 				map.put("name", roleName);
 			}
@@ -115,4 +120,46 @@ public class RoleController extends AbstractController {
 
 		return vo;
 	}
+
+	@ResponseBody
+	@RequestMapping(value = "/rolePermission")
+	public AjaxVO rolePermission(HttpServletRequest request, String id) {
+		AjaxVO vo = new AjaxVO();
+
+		if (StringUtils.isNotBlank(id)) {
+			RolePermission permission = rolePermissionService.selectOne(Long.parseLong(id));
+
+			vo.setData(permission);
+			vo.setSuccess(true);
+		} else {
+			vo.setSuccess(false);
+			vo.setMsg("系统异常，获取角色权限失败");
+		}
+		return vo;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/addRole")
+	public AjaxVO addRole(HttpServletRequest request, String id, String name, String permission) {
+		AjaxVO vo = new AjaxVO();
+		RolePermission rolePermission = null;
+		Role role = null;
+		
+		if (StringUtils.isNotBlank(id)) {
+			role = roleService.selectOne(Long.parseLong(id));
+			role.setName(name);
+			
+			rolePermission = rolePermissionService.selectOne(Long.parseLong(id));
+			rolePermission.setPermission(permission);
+
+			roleService.updateRole(role, rolePermission);
+		} else {
+			role = new Role(name);
+			rolePermission = new RolePermission(permission);
+			
+			roleService.addRole(role, rolePermission);
+		}
+		return vo;
+	}
+
 }

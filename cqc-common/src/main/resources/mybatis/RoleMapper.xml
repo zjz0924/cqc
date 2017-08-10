@@ -18,8 +18,10 @@
 	</select>
 	
 	<insert id="insert" parameterType="cn.wow.common.domain.Role">
-		insert into role (id, name)
-		values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR})
+		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+		    SELECT @@IDENTITY
+		</selectKey>
+		insert into role (name) values (#{name,jdbcType=VARCHAR})
 	</insert>
 	
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

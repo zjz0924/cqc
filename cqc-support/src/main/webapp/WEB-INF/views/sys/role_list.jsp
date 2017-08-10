@@ -130,6 +130,8 @@
 	</style>
 	
 	<script type="text/javascript">
+		var currentId;
+	
 		$(function(){
 			loadRolelist();
 		});
@@ -147,7 +149,6 @@
 						data.data.forEach(function(d){
 							$("#role-content-list").append("<div class='role-content-item' id='"+ d.id + "' name='"+ d.name +"'>"+ d.name + "</div>");
 						});
-						
 						addClickEven();
 					}else{
 						$("#role-content-list").append("<div class='role-content-item-error'>"+ data.msg + "</div>");
@@ -168,10 +169,81 @@
 				var id = $(this).attr("id");
 				var name = $(this).attr("name");
 				$("#name").val(name);
+				
+				currentId = id;
+				
+				$.ajax({
+					url: "${ctx}/role/rolePermission?date=" + new Date(),
+					data: {
+						id: id
+					},
+					success: function(d){
+						if(d.success){
+							if(d.data.permission != null && d.data.permission != ""){
+								var vals = d.data.permission.split(",");
+								
+								vals.forEach(function(rp){
+									// 设置值
+									var kv = rp.split("-");
+									$("#" + kv[0]).val(kv[1]);
+								});
+							}
+						}else{
+							errorMsg(data.msg);
+						}
+					}
+				});
+				
 			});
 			
 			// 默认点击第一个
 			$(".role-content-item").eq(0).trigger("click");
+		}
+		
+		function addRole(){
+			currentId = "";
+			$("#addBtn").hide();
+			$("#name").val('');
+			// 全部选中第一个值
+			$('select').prop('selectedIndex', 0);
+		}
+		
+		function cancelAdd(){
+			$("#addBtn").show();
+			// 默认点击第一个
+			$(".role-content-item").eq(0).trigger("click");
+		}
+		
+		function saveAdd(){
+			var name = $("#name").val();
+			
+			if(isNull(name)){
+				errorMsg("请输入角色名称");
+				return;
+			}
+			
+			var permission = "";
+			$("select").each(function() {
+				console.info($(this).attr("id") + "-" + $(this).val());
+				permission += $(this).attr("id") + "-" + $(this).val() + ",";
+			});
+			
+			$.ajax({
+				url: "${ctx}/role/addRole?date=" + new Date(),
+				data: {
+					id: currentId,
+					permission: permission,
+					name: name
+				},
+				success: function(data){
+					if(data.success){
+						
+					}else{
+						
+					}
+				}
+			});
+			
 		}
 	</script>
 </head>
@@ -192,7 +264,7 @@
                     <h2><i class="fa fa-user red"></i><span class="break"></span><strong>角色管理</strong></h2>
 
                     <span style="float:right;padding-top:5px;">
-                        <button type="button" class="btn btn-primary btn-xs" onclick="goTo('detail')">添加</button>
+                        <button type="button" class="btn btn-primary btn-xs" onclick="addRole()" id="addBtn">添加</button>
                     </span>
                 </div>
 
@@ -263,6 +335,11 @@
 	                    			</c:otherwise>
 								</c:choose>
 							</c:forEach>
+							
+							<div style="margin-top:50px;">
+								<button type="button" class="btn btn-primary" onclick="saveAdd()">保存</button>
+								<button type="button" class="btn btn-danger" onclick="cancelAdd()">取消</button>									
+							</div>
 	                    </div>
                     </div>
                 </div>
