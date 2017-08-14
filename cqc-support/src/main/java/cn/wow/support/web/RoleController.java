@@ -14,9 +14,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.wow.common.domain.Account;
 import cn.wow.common.domain.Menu;
 import cn.wow.common.domain.Role;
 import cn.wow.common.domain.RolePermission;
+import cn.wow.common.service.AccountService;
 import cn.wow.common.service.MenuService;
 import cn.wow.common.service.RolePermissionService;
 import cn.wow.common.service.RoleService;
@@ -36,6 +38,8 @@ public class RoleController extends AbstractController {
 	private MenuService menuService;
 	@Autowired
 	private RolePermissionService rolePermissionService;
+	@Autowired
+	private AccountService accountService;
 
 	@RequestMapping(value = "/list")
 	public String list(HttpServletRequest httpServletRequest, Model model) {
@@ -72,22 +76,34 @@ public class RoleController extends AbstractController {
 		String resultCode = "";
 		String resultMsg = "";
 		Role role = null;
+		List<Role> roleList = getRoleListByName(name);
 
 		try {
 			if (StringUtils.isNotBlank(id)) {
-				role = roleService.selectOne(Long.parseLong(id));
-				role.setName(name);
-				roleService.update(role);
+				if (roleList != null && roleList.size() > 0
+						&& roleList.get(0).getId().longValue() != Long.parseLong(id)) {
+					resultCode = Contants.EDIT_FAIL;
+					resultMsg = "角色名已存在";
+				}else{
+					role = roleService.selectOne(Long.parseLong(id));
+					role.setName(name);
+					roleService.update(role);
 
-				resultCode = Contants.EDIT_SUCCESS;
-				resultMsg = Contants.EDIT_SUCCESS_MSG;
+					resultCode = Contants.EDIT_SUCCESS;
+					resultMsg = Contants.EDIT_SUCCESS_MSG;
+				}
 			} else {
-				role = new Role();
-				role.setName(name);
-				roleService.save(role);
+				if (roleList != null && roleList.size() > 0){
+					resultCode = Contants.SAVE_FAIL;
+					resultMsg = "角色名已存在";
+				}else{
+					role = new Role();
+					role.setName(name);
+					roleService.save(role);
 
-				resultCode = Contants.SAVE_SUCCESS;
-				resultMsg = Contants.SAVE_SUCCESS_MSG;
+					resultCode = Contants.SAVE_SUCCESS;
+					resultMsg = Contants.SAVE_SUCCESS_MSG;
+				}
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -142,24 +158,81 @@ public class RoleController extends AbstractController {
 	@RequestMapping(value = "/addRole")
 	public AjaxVO addRole(HttpServletRequest request, String id, String name, String permission) {
 		AjaxVO vo = new AjaxVO();
-		RolePermission rolePermission = null;
-		Role role = null;
-		
-		if (StringUtils.isNotBlank(id)) {
-			role = roleService.selectOne(Long.parseLong(id));
-			role.setName(name);
-			
-			rolePermission = rolePermissionService.selectOne(Long.parseLong(id));
-			rolePermission.setPermission(permission);
+		vo.setMsg("保存成功");
+		List<Role> roleList = getRoleListByName(name);
 
-			roleService.updateRole(role, rolePermission);
-		} else {
-			role = new Role(name);
-			rolePermission = new RolePermission(permission);
-			
-			roleService.addRole(role, rolePermission);
+		try {
+			RolePermission rolePermission = null;
+			Role role = null;
+
+			if (StringUtils.isNotBlank(id)) {
+				if (roleList != null && roleList.size() > 0
+						&& roleList.get(0).getId().longValue() != Long.parseLong(id)) {
+					vo.setSuccess(false);
+					vo.setMsg("角色名已存在");
+				}else{
+					role = roleService.selectOne(Long.parseLong(id));
+					role.setName(name);
+
+					rolePermission = rolePermissionService.selectOne(Long.parseLong(id));
+					if (rolePermission == null) {
+						rolePermission = new RolePermission();
+						rolePermission.setRoleId(role.getId());
+					}
+					rolePermission.setPermission(permission);
+
+					roleService.updateRole(role, rolePermission);
+				}
+			} else {
+				if (roleList != null && roleList.size() > 0){
+					vo.setSuccess(false);
+					vo.setMsg("角色名已存在");
+				}else{
+					role = new Role(name);
+					rolePermission = new RolePermission(permission);
+
+					roleService.addRole(role, rolePermission);
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			vo.setMsg("系统异常，保存失败");
+			vo.setSuccess(false);
 		}
 		return vo;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/deleteRole")
+	public AjaxVO deleteRole(HttpServletRequest request, Long roleId) {
+		AjaxVO vo = new AjaxVO();
+		vo.setMsg("删除失败");
+
+		try {
+			Map<String, Object> map = new PageMap(false);
+			map.put("roleId", roleId);
+			List<Account> accountList = accountService.selectAllList(map);
+
+			if (accountList == null || accountList.size() < 1) {
+				roleService.deleteRole(roleId);
+			} else {
+				vo.setSuccess(false);
+				vo.setMsg("删除失败，当前角色正在使用中");
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+			vo.setSuccess(false);
+			vo.setMsg("系统异常，无法删除");
+		}
+		return vo;
+	}
+
+	public List<Role> getRoleListByName(String name) {
+		Map<String, Object> map = new PageMap(false);
+		map.put("name", name);
+		List<Role> roleList = roleService.selectAllList(map);
+		return roleList;
 	}
 
 }

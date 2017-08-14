@@ -9,17 +9,19 @@
     <result column="mobile" property="mobile" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="lock" property="lock" jdbcType="CHAR" />
+    <result column="role_id" property="roleId" jdbcType="BIGINT" />
+    <association property="role" javaType="cn.wow.common.domain.Role" column="role_id" select="cn.wow.common.dao.RoleDao.selectOne"/> 
   </resultMap>
   
   <sql id="base_columns" >
-    id, username, nickname, password, mobile, create_time, `lock`
+    id, username, nickname, password, mobile, create_time, `lock`, role_id
   </sql>
   
   <insert id="insert" parameterType="cn.wow.common.domain.Account" >
-    insert into account (username, nickname, password, mobile, create_time, `lock`)
+    insert into account (username, nickname, password, mobile, create_time, `lock`, role_id)
     	values (#{userName,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
       		#{password,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
-      		#{createTime,jdbcType=TIMESTAMP}, #{lock,jdbcType=CHAR})
+      		#{createTime,jdbcType=TIMESTAMP}, #{lock,jdbcType=CHAR}, #{roleId,jdbcType=BIGINT})
   </insert>
   
   <select id="selectOne" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -49,6 +51,9 @@
       </if>
        <if test="lock != null" >
         `lock` = #{lock,jdbcType=CHAR}, 
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=BIGINT}
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -92,6 +97,10 @@
 	      
 	      <if test="endCreateTime != null and endCreateTime != ''">  
 	    	and create_time &lt;= #{endCreateTime, jdbcType=TIMESTAMP}
+	      </if>
+	      
+	      <if test="roleId != null" >
+	        and role_id = #{roleId,jdbcType=BIGINT}
 	      </if>
       </where>
       

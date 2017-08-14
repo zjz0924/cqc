@@ -65,6 +65,13 @@
 			height: 400px;
 		}
 		
+		.role-content-list-delete{
+			display: inline-block;
+		    float: right;
+		    margin-top: 8px;
+		    margin-right: 10px;
+		}
+		
 		.role-content-item-error{
 			padding: 0px 10px;
 			color: red;
@@ -89,7 +96,6 @@
 		.permission{
 			border:1px solid #A3A3A3;
 			border-left:0px;
-			height: 450px;
 			padding: 10px 15px
 		}
 		
@@ -147,7 +153,7 @@
 					
 					if(data.success){
 						data.data.forEach(function(d){
-							$("#role-content-list").append("<div class='role-content-item' id='"+ d.id + "' name='"+ d.name +"'>"+ d.name + "</div>");
+							$("#role-content-list").append("<div class='role-content-item' id='"+ d.id + "' name='"+ d.name +"'>"+ d.name + "<div class='role-content-list-delete'><a href='javascript:void(0)' onclick='deleteRole("+ d.id +")'><i class='fa fa-trash-o'></i></a></div></div>");
 						});
 						addClickEven();
 					}else{
@@ -179,7 +185,7 @@
 					},
 					success: function(d){
 						if(d.success){
-							if(d.data.permission != null && d.data.permission != ""){
+							if(d.data != null && d.data.permission != null && d.data.permission != ""){
 								var vals = d.data.permission.split(",");
 								
 								vals.forEach(function(rp){
@@ -224,7 +230,6 @@
 			
 			var permission = "";
 			$("select").each(function() {
-				console.info($(this).attr("id") + "-" + $(this).val());
 				permission += $(this).attr("id") + "-" + $(this).val() + ",";
 			});
 			
@@ -235,15 +240,35 @@
 					permission: permission,
 					name: name
 				},
+				type: "post",
 				success: function(data){
 					if(data.success){
-						
+						tipMsg(data.msg, function(){
+							window.location.reload();
+						});
 					}else{
-						
+						errorMsg(data.msg);
 					}
 				}
 			});
-			
+		}
+		
+		function deleteRole(roleId){
+			$.ajax({
+				url: "${ctx}/role/deleteRole?date=" + new Date,
+				data: {
+					roleId: roleId
+				},
+				success: function(data){
+					if(data.success){
+						tipMsg(data.msg, function(){
+							window.location.reload();
+						});
+					}else{
+						errorMsg(data.msg);
+					}
+				}
+			});
 		}
 	</script>
 </head>
@@ -305,9 +330,9 @@
 													<div class="permisson-content-item column">
 						                    			<span class="permisson-content-span">${subVo.name}</span>
 						                    			<select class="form-control permisson-content-select" id="${subVo.alias}">
-						                    				<option value="all">可读-可写</option>
-						                    				<option value="read">只读</option>
-						                    				<option value="not">无权限</option>
+						                    				<option value="2">可读-可写</option>
+						                    				<option value="1">只读</option>
+						                    				<option value="0">无权限</option>
 						                    			</select>
 						                    		</div>
 						                    		
@@ -325,9 +350,9 @@
 												<div class="permisson-content-item column">
 					                    			<span class="permisson-content-span">${vo.name}</span>
 					                    			<select class="form-control permisson-content-select" id="${vo.alias}">
-					                    				<option value="all">可读-可写</option>
-					                    				<option value="read">只读</option>
-					                    				<option value="not">无权限</option>
+					                    				<option value="2">可读-可写</option>
+					                    				<option value="1">只读</option>
+					                    				<option value="0">无权限</option>
 					                    			</select>
 					                    		</div>
 	                    					</div>

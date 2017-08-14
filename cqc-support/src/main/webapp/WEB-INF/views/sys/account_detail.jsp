@@ -37,14 +37,13 @@
 		function checkData(){
 			if(isNull("${facadeBean.id}")){
 				if(!isRequired("userName", "用户名必填")) return false;
-			}
-			
-			if(!isRequired("password", "密码必填")) return false;
-			if(!isRequired("repeatPassword", "确认密码必填")) return false;
-			
-			if($("#password").val() != $("#repeatPassword").val()){
-				alert("两次密码不一致");
-				return false;
+				if(!isRequired("password", "密码必填")) return false;
+				if(!isRequired("repeatPassword", "确认密码必填")) return false;
+				
+				if($("#password").val() != $("#repeatPassword").val()){
+					alert("两次密码不一致");
+					return false;
+				}
 			}
 			
 			if(!isRequired("nickName", "昵称不能为空")) return false;
@@ -117,6 +116,17 @@
 		                    <label class="col-md-2 control-label">手机</label>
 		                    <div class="col-md-3">
 		                        <input type="text" id="mobile" name="mobile" class="form-control" value="${facadeBean.mobile}">
+		                    </div>
+		                </div>
+		                
+		                <div class="form-group height_30">
+		                    <label class="col-md-2 control-label">角色</label>
+		                    <div class="col-md-3">
+		                        <select class="form-control" id="roleId" name="roleId">
+		                        	<c:forEach items="${roleList}" var="vo"> 
+		                        		<option value="${vo.id}"  <c:if test="${vo.id == facadeBean.roleId}">selected="selected"</c:if>>${vo.name}</option>
+		                        	</c:forEach>
+	                   			</select>
 		                    </div>
 		                </div>
 		                

@@ -19,5 +19,7 @@ public interface RoleService {
     public void addRole(Role role, RolePermission rolePermission);
     
     public void updateRole(Role role, RolePermission rolePermission);
+    
+    public void deleteRole(Long roleId);
 
 }

@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import cn.wow.common.domain.Account;
+import cn.wow.common.domain.Role;
 import cn.wow.common.service.AccountService;
+import cn.wow.common.service.RoleService;
 import cn.wow.common.utils.AjaxVO;
 import cn.wow.common.utils.cookie.MD5;
 import cn.wow.common.utils.pagination.PageMap;
@@ -33,6 +38,8 @@ public class AccountController extends AbstractController {
 
 	@Autowired
 	private AccountService accountService;
+	@Autowired
+	private RoleService roleService;
 
 	@RequestMapping(value = "/list")
 	public String list(HttpServletRequest httpServletRequest, Model model, String userName, String nickName,
@@ -79,13 +86,13 @@ public class AccountController extends AbstractController {
 		}
 
 		model.addAttribute("mode", request.getParameter("mode"));
-
+		model.addAttribute("roleList", getAllRole());
 		return "sys/account_detail";
 	}
 
 	@RequestMapping(value = "/save")
 	public String save(HttpServletRequest request, Model model, String id, String userName, String nickName,
-			String mobile, String password) {
+			String mobile, String password, Long roleId) {
 
 		String resultCode = "";
 		String resultMsg = "";
@@ -95,6 +102,7 @@ public class AccountController extends AbstractController {
 			if (StringUtils.isNotBlank(id)) {
 				account = accountService.selectOne(Long.parseLong(id));
 
+				account.setRoleId(roleId);
 				account.setMobile(mobile);
 				account.setNickName(nickName);
 				accountService.update(account);
@@ -115,6 +123,7 @@ public class AccountController extends AbstractController {
 					account.setPassword(MD5.getMD5(password, "utf-8").toUpperCase());
 					account.setMobile(mobile);
 					account.setNickName(nickName);
+					account.setRoleId(roleId);
 					account.setCreateTime(new Date());
 					accountService.save(account);
 
@@ -126,6 +135,7 @@ public class AccountController extends AbstractController {
 			ex.printStackTrace();
 			resultCode = Contants.EXCEPTION;
 			resultMsg = Contants.EXCEPTION_MSG;
+			model.addAttribute("roleList", getAllRole());
 		}
 
 		model.addAttribute("resultCode", resultCode);
@@ -246,11 +256,11 @@ public class AccountController extends AbstractController {
 				if (!oldPwd.equals(currentAccount.getPassword())) {
 					return new AjaxVO("修改失败，原密码不正确", false);
 				}
-				
+
 				newPwd = MD5.getMD5(newPwd, "utf-8").toUpperCase();
 				currentAccount.setPassword(newPwd);
 				accountService.update(currentAccount);
-				
+
 				getResponse(vo, true, "密码修改成功，请重新登录");
 			}
 		} catch (Exception ex) {
@@ -258,5 +268,10 @@ public class AccountController extends AbstractController {
 			getResponse(vo, Contants.EXCEP);
 		}
 		return vo;
+	}
+
+	public List<Role> getAllRole() {
+		Map<String, Object> map = new PageMap(false);
+		return roleService.selectAllList(map);
 	}
 }

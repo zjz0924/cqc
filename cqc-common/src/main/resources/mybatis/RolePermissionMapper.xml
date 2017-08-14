@@ -35,7 +35,7 @@
 				permission = #{permission,jdbcType=VARCHAR}
 			</if>
 		</set>
-		where role_id = #{id,jdbcType=BIGINT}
+		where id = #{id,jdbcType=BIGINT}
 	</update>
 	
 </mapper>

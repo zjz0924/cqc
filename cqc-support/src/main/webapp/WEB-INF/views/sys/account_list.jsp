@@ -89,6 +89,7 @@
 										<th class="text_size_14">用户名</th>
 										<th class="text_size_14">昵称</th>
 										<th class="text_size_14">手机</th>
+										<th class="text_size_14">角色</th>
 										<th class="text_size_14">状态</th>
 										<th class="text_size_14">创建时间</th>
 										<th class="text_size_14">操作</th>
@@ -102,6 +103,7 @@
 											<td class="text-center text_size_14" style="width:10%;">${vo.userName}</td>
 											<td class="text-center text_size_14" style="width:10%;">${vo.nickName}</td>
 											<td class="text-center text_size_14" style="width:12%;">${vo.mobile}</td>
+											<td class="text-center text_size_14" style="width:8%;">${vo.role.name}</td>
 											<td class="text-center text_size_14" style="width:8%;">
 												<c:choose>
 													<c:when test="${vo.lock == 'N'}">
@@ -112,7 +114,7 @@
 													</c:otherwise>
 												</c:choose>
 											</td>
-											<td class="text-center text_size_14" style="width:18%;">
+											<td class="text-center text_size_14" style="width:16%;">
 												<fmt:formatDate value='${vo.createTime}' type="date" pattern="yyyy-MM-dd hh:mm:ss" />
 											</td>
 											<td>

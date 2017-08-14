@@ -59,4 +59,10 @@ public class RoleServiceImpl implements RoleService{
     	roleDao.update(role);
     	rolePermissionDao.update(rolePermission);
     }
+    
+    public void deleteRole(Long roleId){
+    	roleDao.deleteByPrimaryKey(roleId);
+    	rolePermissionDao.deleteByPrimaryKey(roleId);
+    }
+    
 }

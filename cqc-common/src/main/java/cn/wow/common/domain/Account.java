@@ -21,6 +21,10 @@ public class Account {
 	private Date createTime;
 	// 是否被封号：Y-是，N-否
 	private String lock = "N";
+	// 角色ID
+	private Long roleId;
+	// 角色
+	private Role role;
 
 	public String getLock() {
 		return lock;
@@ -78,4 +82,19 @@ public class Account {
 		this.createTime = createTime;
 	}
 
+	public Long getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
 }
