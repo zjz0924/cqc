@@ -174,14 +174,17 @@ public class RoleController extends AbstractController {
 					role = roleService.selectOne(Long.parseLong(id));
 					role.setName(name);
 
+					String oldPermission = "";
 					rolePermission = rolePermissionService.selectOne(Long.parseLong(id));
 					if (rolePermission == null) {
 						rolePermission = new RolePermission();
 						rolePermission.setRoleId(role.getId());
 					}
+					oldPermission = rolePermission.getPermission();
 					rolePermission.setPermission(permission);
 
 					roleService.updateRole(role, rolePermission);
+					logger.info("update role [ " + name + " ], old permission [ "+ oldPermission +" ] ,  new permission [ " + permission +" ]");
 				}
 			} else {
 				if (roleList != null && roleList.size() > 0){
@@ -192,6 +195,7 @@ public class RoleController extends AbstractController {
 					rolePermission = new RolePermission(permission);
 
 					roleService.addRole(role, rolePermission);
+					logger.info("create role [ " + name + " ], the permission [ " + permission +" ]");
 				}
 			}
 		} catch (Exception ex) {

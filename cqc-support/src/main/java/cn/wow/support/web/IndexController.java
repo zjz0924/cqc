@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +29,8 @@ import cn.wow.support.utils.Contants;
 @RequestMapping(value = "")
 public class IndexController {
 
+	private static Logger logger = LoggerFactory.getLogger(IndexController.class);
+	
 	@Autowired
 	private AccountService accountService;
 	@Autowired
@@ -40,16 +44,12 @@ public class IndexController {
 
 		model.addAttribute("currentAccount", currentAccount);
 		model.addAttribute("menuList", getPermission(currentAccount, request));
+		
+		logger.debug("current account" + currentAccount.getUserName());
+		logger.error("the account can't access home page");
+		logger.info("welcome to our world");
 		return "index/index";
 	}
-
-	@RequestMapping(value = "/main")
-	public String main(HttpServletRequest request, Model model) {
-		Account currentAccount = (Account) request.getSession().getAttribute(Contants.CURRENT_ACCOUNT);
-
-		return "index/main";
-	}
-
 	
 	/**
 	 * 获取当前角色的菜单

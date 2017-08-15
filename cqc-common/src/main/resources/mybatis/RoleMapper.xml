@@ -45,7 +45,7 @@
 	      from role
 	     <where>
 			  <if test="name != null">
-				name = #{name,jdbcType=VARCHAR}
+				name like concat('%', #{name,jdbcType=VARCHAR}, '%') 
 			  </if>
 	      </where>
 	      

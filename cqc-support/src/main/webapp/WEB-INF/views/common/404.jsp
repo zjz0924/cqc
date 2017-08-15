@@ -18,6 +18,7 @@
 		    padding-top: 50px;
 		    text-align: center;
 		    width: 560px;
+		    height: 500px;
 		}
 		#container img {
 		    border: medium none;

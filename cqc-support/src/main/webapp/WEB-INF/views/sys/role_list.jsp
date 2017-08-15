@@ -32,7 +32,8 @@
 		}
 		
 		.role-content-item-selected{
-			background: #d1e6fd
+			background: #d1e6fd;
+			font-weight: bold;
 		}
 		
 		.role-content-item:first-child{
@@ -45,7 +46,7 @@
 		    border-style: solid;
 		    border-color: #d7d7d7;
 		    font-family: Verdana,Geneva,Helvetica,Arial,sans-serif;
-		    width: 70%;
+		    width: 50%;
 		}
 		
 		.role-content-title{
@@ -56,7 +57,6 @@
 		
 		.role-content-query-tn{
 			padding: 2px 10px;
-    		margin-left: 10px;
 		}
 		
 		.role-content-list{
@@ -113,7 +113,8 @@
 		.permisson-content-item{
 			padding: 8px 0px;
 			background: #f2f8ff;
-			width: 33.33%;
+			width:248px;
+			float:left
 		}
 		
 		.permisson-content-select{
@@ -140,6 +141,13 @@
 	
 		$(function(){
 			loadRolelist();
+			
+			document.onkeydown = function(e){ 
+			    var ev = document.all ? window.event : e;
+			    if(ev.keyCode == 13) {
+			    	loadRolelist();
+			    }
+			}
 		});
 		
 		function loadRolelist(){
@@ -270,6 +278,11 @@
 				}
 			});
 		}
+		
+		function cancelQuery(){
+			$("#roleName").val('');
+			loadRolelist();
+		}
 	</script>
 </head>
 
@@ -277,6 +290,7 @@
     <div class="row">
         <div class="col-lg-12">
             <ol class="breadcrumb">
+            	<li><i class="fa fa-cogs"></i>系统管理</li>
                 <li><i class="fa fa-user"></i>角色管理</li>
             </ol>
         </div>
@@ -294,12 +308,12 @@
                 </div>
 
                 <div class="panel-body">
-                
                 	<div class="table">
 	                	<div class="role-content column">
 	                		<div class="role-content-query">
 	                			<input type="text" id="roleName" name="roleName" class="role-content-query-input">
 	                			<button class="btn btn-primary role-content-query-tn" onclick="loadRolelist()">查询</button>
+	                			<button class="btn btn-danger role-content-query-tn" onclick="cancelQuery()">取消</button>
 	                		</div>
 	                		
 	                		<div class="role-content-title">角色</div>
@@ -320,14 +334,9 @@
 									<c:when test="${fn:length(vo.subList) > 0}">
 	                    				<div class="permisson-content-list">
 	                    					<div>${vo.name}</div>
-	                    					<div style="border-top: 1px solid #eaeaea; border-bottom: 1px solid #eaeaea" class="table">
+	                    					<div style="border-top: 1px solid #eaeaea; border-bottom: 1px solid #eaeaea;"  class="table">
                     							<c:forEach items="${vo.subList}" var="subVo" varStatus="vst">
-                    							
-                    								<c:if test="${vst.index % 3 == 0}">
-                    									<div class="row">
-                    								</c:if>
-                    								
-													<div class="permisson-content-item column">
+													<div class="permisson-content-item">
 						                    			<span class="permisson-content-span">${subVo.name}</span>
 						                    			<select class="form-control permisson-content-select" id="${subVo.alias}">
 						                    				<option value="2">可读-可写</option>
@@ -335,10 +344,6 @@
 						                    				<option value="0">无权限</option>
 						                    			</select>
 						                    		</div>
-						                    		
-						                    		<c:if test="${vst.index != 0 && (vst.index +1) % 3 == 0}">
-                    									</div>
-                    								</c:if>
 												</c:forEach>
 	                    					</div>
 	                    				</div>

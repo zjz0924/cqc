@@ -19,10 +19,13 @@
 				$("#modular").load(function() {
 					$(this).height(0); //用于每次刷新时控制IFRAME高度初始化   
 					var height = $(this).contents().height() + 10;
-					$(this).height(height < 650 ? 650 : height);
+					$(this).height(height);
 				});
 				
+				//需要使用openFrame随便打开个页面，不然退出不会有效果（bug）
 				openFrame("main");
+				// 自动打开第一个菜单 
+				autoOpen();
 			});
 		
 			function openFrame(src) {
@@ -43,6 +46,17 @@
 					resize: true
 				});
 			}
+			
+			// 自动点开第一个
+			function autoOpen(){
+				// 自动点开第一个
+				$(".nav-sidebar li:first a").trigger("click");
+				
+				var subItem = $(".nav-sidebar li:first").children("ul").find("li:first a");
+				if(subItem.length > 0){
+					subItem.trigger("click");
+				}
+			}
 		</script>
 	</head>
 </head>
@@ -52,7 +66,6 @@
 	<div class="navbar" role="navigation">
 	
 		<div class="container-fluid">		
-			
 			<ul class="nav navbar-nav navbar-actions navbar-left">
 				<li class="visible-md visible-lg"><a href="javascript:void(0)" id="main-menu-toggle"><i class="fa fa-th-large"></i></a></li>
 				<li class="visible-xs visible-sm"><a href="javascript:void(0)" id="sidebar-menu"><i class="fa fa-navicon"></i></a></li>			
@@ -65,7 +78,7 @@
 						<li class="dropdown-menu-header">
 							<strong>账号管理</strong>
 						</li>						
-						<li><a href="javascript:void(0)" onclick="openFrame('accountController/detail?id=${currentAccount.id}&mode=readonly')"><i class="fa fa-user"></i> 个人信息</a></li>
+						<li><a href="javascript:void(0)" onclick="openFrame('account/detail?id=${currentAccount.id}&mode=readonly')"><i class="fa fa-user"></i> 个人信息</a></li>
 						<li><a href="javascript:void(0)" onclick="changepwd()"><i class="fa fa-wrench"></i> 修改密码</a></li>
 	        		</ul>
 	      		</li>
