@@ -67,54 +67,9 @@ public class RoleController extends AbstractController {
 		} catch (Exception ex) {
 			vo.setSuccess(false);
 			vo.setMsg("系统异常，数据加载失败");
+			logger.error("Failed to get role data.", ex);
 		}
 		return vo;
-	}
-
-	@RequestMapping(value = "/save")
-	public String save(HttpServletRequest request, Model model, String id, String name) {
-		String resultCode = "";
-		String resultMsg = "";
-		Role role = null;
-		List<Role> roleList = getRoleListByName(name);
-
-		try {
-			if (StringUtils.isNotBlank(id)) {
-				if (roleList != null && roleList.size() > 0
-						&& roleList.get(0).getId().longValue() != Long.parseLong(id)) {
-					resultCode = Contants.EDIT_FAIL;
-					resultMsg = "角色名已存在";
-				}else{
-					role = roleService.selectOne(Long.parseLong(id));
-					role.setName(name);
-					roleService.update(role);
-
-					resultCode = Contants.EDIT_SUCCESS;
-					resultMsg = Contants.EDIT_SUCCESS_MSG;
-				}
-			} else {
-				if (roleList != null && roleList.size() > 0){
-					resultCode = Contants.SAVE_FAIL;
-					resultMsg = "角色名已存在";
-				}else{
-					role = new Role();
-					role.setName(name);
-					roleService.save(role);
-
-					resultCode = Contants.SAVE_SUCCESS;
-					resultMsg = Contants.SAVE_SUCCESS_MSG;
-				}
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			resultCode = Contants.EXCEPTION;
-			resultMsg = Contants.EXCEPTION_MSG;
-		}
-
-		model.addAttribute("resultCode", resultCode);
-		model.addAttribute("resultMsg", resultMsg);
-		model.addAttribute("facadeBean", role);
-		return "role_detail";
 	}
 
 	@ResponseBody
@@ -202,6 +157,7 @@ public class RoleController extends AbstractController {
 			ex.printStackTrace();
 			vo.setMsg("系统异常，保存失败");
 			vo.setSuccess(false);
+			logger.error("Failed to add role.", ex);
 		}
 		return vo;
 	}
@@ -210,7 +166,7 @@ public class RoleController extends AbstractController {
 	@RequestMapping(value = "/deleteRole")
 	public AjaxVO deleteRole(HttpServletRequest request, Long roleId) {
 		AjaxVO vo = new AjaxVO();
-		vo.setMsg("删除失败");
+		vo.setMsg("删除成功");
 
 		try {
 			Map<String, Object> map = new PageMap(false);
@@ -228,6 +184,7 @@ public class RoleController extends AbstractController {
 
 			vo.setSuccess(false);
 			vo.setMsg("系统异常，无法删除");
+			logger.error("Failed to delete role.", ex);
 		}
 		return vo;
 	}

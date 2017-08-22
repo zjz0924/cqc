@@ -9,11 +9,11 @@ public interface AccountService {
 	
 	public Account selectOne(Long id);
 	
-	public int save(Account account);
+	public int save(String userName, Account account);
 	
-	public int update(Account account);
+	public int update(String userName, Account account);
 	
-	public int deleteByPrimaryKey(Long id);
+	public int deleteByPrimaryKey(String userName, Account account);
 	
 	public Account selectByAccountName(String userName);
 	

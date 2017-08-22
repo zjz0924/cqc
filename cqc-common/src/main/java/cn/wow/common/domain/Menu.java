@@ -1,9 +1,13 @@
 package cn.wow.common.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Menu {
-    private Long id;
+public class Menu implements Serializable{
+	
+	private static final long serialVersionUID = -7677318918671654590L;
+
+	private Long id;
 
     private String name;
 

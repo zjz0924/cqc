@@ -16,7 +16,7 @@ import cn.wow.common.utils.pagination.PageHelperExt;
 
 @Service
 @Transactional
-public class AccountServiceImpl implements AccountService{
+public class AccountServiceImpl implements AccountService {
 
 	private static Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
 
@@ -27,29 +27,24 @@ public class AccountServiceImpl implements AccountService{
 		return accountDao.selectOne(id);
 	}
 
-	public int save(Account account) {
+	public int save(String userName, Account account) {
 		return accountDao.insert(account);
 	}
 
-	public int update(Account account) {
+	public int update(String userName, Account account) {
 		return accountDao.update(account);
 	}
 
-	public int deleteByPrimaryKey(Long id) {
-		return accountDao.deleteByPrimaryKey(id);
+	public int deleteByPrimaryKey(String userName, Account account) {
+		return accountDao.deleteByPrimaryKey(account.getId());
 	}
-	
-	public Account selectByAccountName(String userName){
+
+	public Account selectByAccountName(String userName) {
 		return accountDao.selectByAccountName(userName);
 	}
-	
-	public List<Account> selectAllList(Map<String, Object> map){
+
+	public List<Account> selectAllList(Map<String, Object> map) {
 		PageHelperExt.startPage(map);
 		return accountDao.selectAllList(map);
 	}
 }
-
-
-
-
-

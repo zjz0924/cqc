@@ -15,6 +15,7 @@
 		<module>cqc-support</module>
 		<module>cqc-common</module>
 		<module>cqc-wechat</module>
+		<module>service</module>
 	</modules>
 	
 	<pluginRepositories>
@@ -56,13 +57,14 @@
 		<logback.version>1.1.2</logback.version>
 		<commons-lang3.version>3.2.1</commons-lang3.version>
 		<commons-io.version>2.4</commons-io.version>
+		<commons.lang.version>2.6</commons.lang.version>
 		<guava.version>16.0</guava.version>
 		<joda-time.version>2.3</joda-time.version>
 		<dozer.version>5.4.0</dozer.version>
 		<httpclient.version>4.3.2</httpclient.version>
 		<freemarker.version>2.3.22</freemarker.version>
 		<aspectj.version>1.7.3</aspectj.version>
-		<junit.version>4.11</junit.version>
+		<junit.version>4.12</junit.version>
 		<assertj.version>1.5.0</assertj.version>
 		<mockito.version>1.9.5</mockito.version>
 		<powermock.version>1.5.3</powermock.version>
@@ -74,6 +76,8 @@
 		<!-- Plugin的属性 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
+		<cglib.version>3.2.0</cglib.version>
+		<jmock.version>2.8.1</jmock.version>
 	</properties>
 
 	<prerequisites>
@@ -274,11 +278,27 @@
 			</dependency>
 			<!-- SOAP end -->
 
-			<!-- JAX-RS begin -->
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-frontend-jaxrs</artifactId>
 				<version>${cxf.version}</version>
+			</dependency>
+			
+			<!-- JACKSON 2 -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.jaxrs</groupId>
@@ -286,7 +306,11 @@
 				<version>${jackson.version}</version>
 				<scope>runtime</scope>
 			</dependency>
-			<!-- JAX-RS end -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.datatype</groupId>
+				<artifactId>jackson-datatype-joda</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
 
 			<!-- JMS begin -->
 			<dependency>
@@ -485,12 +509,6 @@
 				<artifactId>joda-time-jsptags</artifactId>
 				<version>1.1.1</version>
 			</dependency>
-			<!-- joda for jackson -->
-			<dependency>
-				<groupId>com.fasterxml.jackson.datatype</groupId>
-				<artifactId>jackson-datatype-joda</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
 			<!-- GENERAL UTILS end -->
 
 			<!-- OTHER TOOLS begin -->
@@ -540,6 +558,52 @@
 				<version>${spring.version}</version>
 				<scope>test</scope>
 			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			
+			<dependency>
+	            <groupId>org.springframework</groupId>
+	            <artifactId>spring-aspects</artifactId>
+	            <version>${spring.version}</version>
+	        </dependency>
+	        
+	        <dependency>
+	            <groupId>org.springframework</groupId>
+	            <artifactId>spring-aop</artifactId>
+	            <version>${spring.version}</version>
+	        </dependency>
+	        
+	  <!--       <dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>${commons.lang.version}</version>
+			</dependency> -->
+			
+			
+			<dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject</artifactId>
+				<version>1</version>
+			</dependency>
+	
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib</artifactId>
+				<version>${cglib.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib-nodep</artifactId>
+				<version>${cglib.version}</version>
+				<scope>test</scope>
+			</dependency>
+
 
 			<!-- selenium 2.0 -->
 			<dependency>
@@ -610,15 +674,7 @@
 			</dependency>
 
 
-			<!-- smtp server simulator -->
-			<dependency>
-				<groupId>com.icegreen</groupId>
-				<artifactId>greenmail</artifactId>
-				<version>1.3.1b</version>
-				<scope>test</scope>
-			</dependency>
-
-			<!-- 定义隐式依赖的版本 -->
+			<!-- test -->
 			<dependency>
 				<groupId>org.hamcrest</groupId>
 				<artifactId>hamcrest-core</artifactId>
@@ -631,6 +687,28 @@
 				<version>2.1</version>
 				<scope>test</scope>
 			</dependency>
+			
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.jmock</groupId>
+				<artifactId>jmock</artifactId>
+				<version>${jmock.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jmock</groupId>
+				<artifactId>jmock-legacy</artifactId>
+				<version>${jmock.version}</version>
+				<scope>test</scope>
+			</dependency>
+			
 			<!-- TEST end -->
 			
 			<!-- ehcache -->

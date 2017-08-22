@@ -13,14 +13,18 @@
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
 		"
-	default-lazy-init="true">	 
+	default-lazy-init="true">	
+	
+	<!-- aop 切面 (操作日志)-->
+	<context:component-scan base-package="wow.operationlog"></context:component-scan> 
+	<aop:aspectj-autoproxy/>  
 
 	<!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
 	<context:component-scan base-package="cn.wow.common">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
 	</context:component-scan>
-
+	
 	<!-- 配置spring事务管理器-->
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

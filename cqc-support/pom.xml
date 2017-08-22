@@ -35,6 +35,12 @@
 			<artifactId>cqc-common</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		
+		<dependency>
+            <groupId>cqc.service</groupId>
+            <artifactId>cqc-operationlog-service</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
 		<!-- spring集成freemarker需要 -->
 		<dependency>
@@ -324,19 +330,12 @@
 		<!-- h2 如果生产数据库不是H2，解开下面的注释 <dependency> <groupId>com.h2database</groupId> 
 			<artifactId>h2</artifactId> </dependency> -->
 
-		<!-- mail server simulator -->
-		<dependency>
-			<groupId>com.icegreen</groupId>
-			<artifactId>greenmail</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>org.scalatest</groupId>
 			<artifactId>scalatest_2.10</artifactId>
 			<version>2.0</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- TEST end -->
 
 		<dependency>
 			<groupId>javax.jms</groupId>

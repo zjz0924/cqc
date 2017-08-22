@@ -16,35 +16,50 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.wow.common.domain.Account;
+import cn.wow.common.domain.operationlog.ClientInfo;
 import cn.wow.common.service.AccountService;
+import cn.wow.common.service.OperationLogService;
 import cn.wow.support.utils.Contants;
 
 public class FormAuthenticationExtendFilter extends FormAuthenticationFilter {
 	private static Logger logger = LoggerFactory.getLogger(FormAuthenticationExtendFilter.class);
-	
+
 	@Autowired
 	private AccountService accountService;
-	
+	@Autowired
+	private OperationLogService operationLogService;
+
 	@Override
-	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
+	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
+			ServletResponse response) throws Exception {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-		
+
 		String successUrl = "/index";
-		
-		/*//成功登录后返回成功跳转页面，指定跳转地址*/
+
+		/* //成功登录后返回成功跳转页面，指定跳转地址 */
 		WebUtils.issueRedirect(request, response, successUrl);
-		
-		//成功登录后返回成功跳转页面
-		//issueSuccessRedirect(request, response);
-		
-		String username = (String)SecurityUtils.getSubject().getPrincipal();
-		if(StringUtils.isNotBlank(username)){
+
+		// 成功登录后返回成功跳转页面
+		// issueSuccessRedirect(request, response);
+
+		String username = (String) SecurityUtils.getSubject().getPrincipal();
+		if (StringUtils.isNotBlank(username)) {
 			Account currentAccount = accountService.selectByAccountName(username);
-		
 			httpServletRequest.getSession().setAttribute(Contants.CURRENT_ACCOUNT, currentAccount);
+
+			// 判断用户客户端信息
+			createOrUpdateClientInfo(username, request.getRemoteAddr(), httpServletRequest.getHeader("user-agent"));
 		}
-		
+
 		return false;
 	}
+
+	private void createOrUpdateClientInfo(String userName, String clientIp, String userAgent) {
+		ClientInfo clientInfo = new ClientInfo();
+		clientInfo.setClientIp(clientIp);
+		clientInfo.setUserAgent(userAgent);
+		operationLogService.createOrUpdateUserClientInfo(userName, clientInfo);
+	}
+
 }

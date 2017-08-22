@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import cn.wow.common.utils.VerifyCodeUtils;
-import cn.wow.support.utils.Contants;
 
 /**
  * 登录控制器

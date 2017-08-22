@@ -45,9 +45,6 @@ public class IndexController {
 		model.addAttribute("currentAccount", currentAccount);
 		model.addAttribute("menuList", getPermission(currentAccount, request));
 		
-		logger.debug("current account" + currentAccount.getUserName());
-		logger.error("the account can't access home page");
-		logger.info("welcome to our world");
 		return "index/index";
 	}
 	

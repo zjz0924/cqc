@@ -1,13 +1,17 @@
 package cn.wow.common.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 用户
- * 
- * @author zhenjunzhuo 2016-07-26
+ * @author zhenjunzhuo 
+ * 2016-07-26
  */
-public class Account {
+public class Account implements Serializable, MybatisVO{
+	
+	private static final long serialVersionUID = 9009465862519388181L;
+	
 	private Long id;
 	// 用户名
 	private String userName;

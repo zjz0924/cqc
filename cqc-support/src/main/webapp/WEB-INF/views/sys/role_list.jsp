@@ -183,6 +183,7 @@
 				var id = $(this).attr("id");
 				var name = $(this).attr("name");
 				$("#name").val(name);
+				$("#addBtn").show();
 				
 				currentId = id;
 				
@@ -220,6 +221,7 @@
 			$("#name").val('');
 			// 全部选中第一个值
 			$('select').prop('selectedIndex', 0);
+			$(".role-content-item").removeClass("role-content-item-selected");
 		}
 		
 		function cancelAdd(){
@@ -282,6 +284,7 @@
 		function cancelQuery(){
 			$("#roleName").val('');
 			loadRolelist();
+			$("#addBtn").show();
 		}
 	</script>
 </head>

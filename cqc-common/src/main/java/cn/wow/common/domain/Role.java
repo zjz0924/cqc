@@ -1,7 +1,12 @@
 package cn.wow.common.domain;
 
-public class Role {
-    private Long id;
+import java.io.Serializable;
+
+public class Role implements Serializable, MybatisVO{
+	
+	private static final long serialVersionUID = 5632083155878693998L;
+
+	private Long id;
 
     private String name;
 

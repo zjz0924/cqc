@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,7 +106,7 @@ public class AccountController extends AbstractController {
 				account.setRoleId(roleId);
 				account.setMobile(mobile);
 				account.setNickName(nickName);
-				accountService.update(account);
+				accountService.update(getCurrentUserName(), account);
 
 				resultCode = Contants.EDIT_SUCCESS;
 				resultMsg = Contants.EDIT_SUCCESS_MSG;
@@ -125,7 +126,7 @@ public class AccountController extends AbstractController {
 					account.setNickName(nickName);
 					account.setRoleId(roleId);
 					account.setCreateTime(new Date());
-					accountService.save(account);
+					accountService.save(getCurrentUserName(), account);
 
 					resultCode = Contants.SAVE_SUCCESS;
 					resultMsg = Contants.SAVE_SUCCESS_MSG;
@@ -151,11 +152,17 @@ public class AccountController extends AbstractController {
 
 		try {
 			if (StringUtils.isNotBlank(id)) {
-				int num = accountService.deleteByPrimaryKey(Long.parseLong(id));
+				Account account = accountService.selectOne(Long.parseLong(id));
+				
+				if(account != null){
+					int num = accountService.deleteByPrimaryKey(getCurrentUserName(), account);
 
-				if (num > 0) {
-					getResponse(vo, Contants.SUC_DELETE);
-				} else {
+					if (num > 0) {
+						getResponse(vo, Contants.SUC_DELETE);
+					} else {
+						getResponse(vo, Contants.FAIL_DELETE);
+					}
+				}else{
 					getResponse(vo, Contants.FAIL_DELETE);
 				}
 			} else {
@@ -185,7 +192,7 @@ public class AccountController extends AbstractController {
 
 				if (account != null) {
 					account.setLock(lock);
-					accountService.update(account);
+					accountService.update(getCurrentUserName(), account);
 
 					getResponse(vo, Contants.SUC_EDIT);
 				} else {
@@ -223,7 +230,7 @@ public class AccountController extends AbstractController {
 					String newPwd = MD5.getMD5(password, "utf-8").toUpperCase();
 
 					account.setPassword(newPwd);
-					accountService.update(account);
+					accountService.update(getCurrentUserName(), account);
 
 					getResponse(vo, true, "密码重置成功");
 				} else {
@@ -259,7 +266,7 @@ public class AccountController extends AbstractController {
 
 				newPwd = MD5.getMD5(newPwd, "utf-8").toUpperCase();
 				currentAccount.setPassword(newPwd);
-				accountService.update(currentAccount);
+				accountService.update(getCurrentUserName(), currentAccount);
 
 				getResponse(vo, true, "密码修改成功，请重新登录");
 			}
