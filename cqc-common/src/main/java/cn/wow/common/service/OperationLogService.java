@@ -1,6 +1,8 @@
 package cn.wow.common.service;
 
 import java.util.List;
+import java.util.Map;
+
 import cn.wow.common.domain.OperationLog;
 import cn.wow.common.domain.operationlog.ClientInfo;
 import cn.wow.common.domain.operationlog.OperationType;
@@ -36,7 +38,6 @@ public interface OperationLogService {
 	 * @param detail detail keyword
 	 * @return
 	 */
-	public List<OperationLog> selectAllList(String pageNum, String pageSize, String userName, String type,
-			String startTimeFrom, String startTimeTo, String detail);
+	public List<OperationLog> selectAllList(Map<String, Object> map);
 
 }

@@ -21,8 +21,8 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<ol class="breadcrumb">
-				<li><i class="fa fa-home"></i>系统管理</li>
-				<li><i class="fa fa-user"></i><a href="${ctx}/account/list">用户管理</a></li>
+				<li>系统管理</li>
+				<li><a href="${ctx}/account/list">用户管理</a></li>
 			</ol>
 		</div>
 	</div>
@@ -31,7 +31,7 @@
 		<div class="col-lg-12">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h2><i class="fa fa-user red"></i><span class="break"></span><strong>用户管理</strong></h2>
+					<h2><span class="break"></span><strong>用户管理</strong></h2>
 					
 					<span style="float:right;padding-top:5px;">
 						<button type="button" class="btn btn-primary btn-xs" onclick="goTo('detail')">添加</button>

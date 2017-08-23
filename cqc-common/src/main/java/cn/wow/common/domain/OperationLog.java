@@ -16,7 +16,9 @@ public class OperationLog {
     private String type;
 
     private String detail;
-
+    
+    private String operation;
+    
     public Long getId() {
         return id;
     }
@@ -73,7 +75,15 @@ public class OperationLog {
         this.detail = detail == null ? null : detail.trim();
     }
     
-    public String toString() {
+    public String getOperation() {
+		return operation;
+	}
+
+	public void setOperation(String operation) {
+		this.operation = operation;
+	}
+
+	public String toString() {
 		return "OperationLog [id=" + id + ", userName="
 				+ userName + ", userAgent=" + userAgent + ", clientIp=" + clientIp + ", time=" + time + ", detail="
 				+ detail + ", type=" + type + "]";

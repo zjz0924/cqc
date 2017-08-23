@@ -45,6 +45,7 @@ public class OperationLogServiceImpl implements OperationLogService {
 		operationLog.setTime(new Date());
 		operationLog.setClientIp(clientIp);
 		operationLog.setUserAgent(userAgent);
+		operationLog.setOperation(operationType.getDisplayName());
 		if (StringUtils.isNotBlank(jsonDetail)) {
 			operationLog.setDetail(jsonDetail);
 		}
@@ -72,30 +73,7 @@ public class OperationLogServiceImpl implements OperationLogService {
 		return clientInfoMap.get(userName);
 	}
 
-	public List<OperationLog> selectAllList(String pageNum, String pageSize, String userName, String type,
-			String startTimeFrom, String startTimeTo, String detail) {
-		Map<String, Object> map = new PageMap(false);
-
-		if (StringUtils.isNotBlank(pageNum) && StringUtils.isNotBlank(pageSize)) {
-			new PageMap(Integer.parseInt(pageNum), Integer.parseInt(pageSize));
-		}
-
-		if (StringUtils.isNotBlank(userName)) {
-			map.put("userName", userName);
-		}
-		if (StringUtils.isNotBlank(type)) {
-			map.put("type", type);
-		}
-		if (StringUtils.isNotBlank(detail)) {
-			map.put("detail", detail);
-		}
-		if (StringUtils.isNotBlank(startTimeFrom)) {
-			map.put("startTimeFrom", startTimeFrom + " 00:00:00");
-		}
-		if (StringUtils.isNotBlank(startTimeTo)) {
-			map.put("endCreateTime", startTimeTo + " 23:59:59");
-		}
-
+	public List<OperationLog> selectAllList(Map<String, Object> map) {
 		PageHelperExt.startPage(map);
 		return operationLogDao.selectAllList(map);
 	}

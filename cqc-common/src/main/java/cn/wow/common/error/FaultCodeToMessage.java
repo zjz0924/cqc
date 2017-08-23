@@ -3,8 +3,6 @@ package cn.wow.common.error;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import cn.wow.common.config.PropertiesFile; 
-
 /**
  * 
  * This class converts fault code ids to readable Strings.
@@ -17,8 +15,6 @@ public class FaultCodeToMessage
    private static final String DEFAULT_ERROR = "Application Error.";
 
    private static volatile FaultCodeToMessage fcr = null;
-
-   private PropertiesFile props;
 
    public static final int DATABASE_FAILURE = 1000;
 
@@ -145,17 +141,7 @@ public class FaultCodeToMessage
     */
    public String getFaultCodeMessage(int faultCode)
    {
-      String faultCodeMessage = null;
-      if (props != null)
-      {
-         ResourceBundle rb = ResourceBundle.getBundle("META-INF/FaultCodeToMessage");
-         faultCodeMessage = rb.getString(Integer.toString(faultCode));
-      }
-      if (faultCodeMessage == null)
-      {
-         faultCodeMessage = DEFAULT_ERROR;
-      }
-      return faultCodeMessage;
+      return DEFAULT_ERROR;
    }
    
 }

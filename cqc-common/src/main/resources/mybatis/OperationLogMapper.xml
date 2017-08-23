@@ -8,11 +8,12 @@
 		<result column="client_ip" property="clientIp" jdbcType="VARCHAR" />
 		<result column="time" property="time" jdbcType="TIMESTAMP" />
 		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="operation" property="operation" jdbcType="VARCHAR" />
 		<result column="detail" property="detail" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<sql id="base_columns">
-		id, user_name, user_agent, client_ip, time, type, detail
+		id, user_name, user_agent, client_ip, time, type, detail, operation
 	</sql>
 
 	<insert id="insert" parameterType="cn.wow.common.domain.OperationLog">
@@ -20,13 +21,10 @@
 			order="AFTER">
 			SELECT @@IDENTITY
 		</selectKey>
-		insert into operation_log (user_name, user_agent, client_ip, time,
-		type, detail)
+		insert into operation_log (user_name, user_agent, client_ip, time, type, detail, operation)
 		values (#{userName,jdbcType=VARCHAR},
-		#{userAgent,jdbcType=VARCHAR}, #{clientIp,jdbcType=VARCHAR},
-		#{time,jdbcType=TIMESTAMP},
-		#{type,jdbcType=VARCHAR},
-		#{detail,jdbcType=LONGVARCHAR})
+		#{userAgent,jdbcType=VARCHAR}, #{clientIp,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP},#{type,jdbcType=VARCHAR},
+		#{detail,jdbcType=LONGVARCHAR},#{operation,jdbcType=VARCHAR})
 	</insert>
 
 	<select id="selectOne" resultMap="BaseResultMap" parameterType="java.lang.Long">
@@ -46,6 +44,10 @@
 
 			<if test="type != null and type != ''">
 				and type = #{type,jdbcType=VARCHAR}
+			</if>
+			
+			<if test="operation != null and operation != ''">
+				and operation = #{operation,jdbcType=VARCHAR}
 			</if>
 
 			<if test="startTimeFrom != null and startTimeFrom != ''">

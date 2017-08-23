@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.wow.common.domain.Account;
 import cn.wow.common.domain.operationlog.ClientInfo;
+import cn.wow.common.domain.operationlog.OperationType;
+import cn.wow.common.domain.operationlog.ServiceType;
 import cn.wow.common.service.AccountService;
 import cn.wow.common.service.OperationLogService;
 import cn.wow.support.utils.Contants;
@@ -50,6 +52,8 @@ public class FormAuthenticationExtendFilter extends FormAuthenticationFilter {
 
 			// 判断用户客户端信息
 			createOrUpdateClientInfo(username, request.getRemoteAddr(), httpServletRequest.getHeader("user-agent"));
+			// 添加日志
+			operationLogService.save(username, OperationType.LOGIN, ServiceType.ACCOUNT, "");
 		}
 
 		return false;

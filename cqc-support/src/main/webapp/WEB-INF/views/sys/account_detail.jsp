@@ -56,8 +56,9 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<ol class="breadcrumb">
-				<li><i class="fa fa-user"></i><a href="${ctx}/account/list">用户管理</a></li>
-				<li><i class="fa fa-user"></i>用户信息</li>
+				<li>系统管理</li>
+				<li><a href="${ctx}/account/list">用户管理</a></li>
+				<li>用户信息</li>
 			</ol>
 		</div>
 	</div>
@@ -67,7 +68,7 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h2>
-						<i class="fa fa-user red"></i><span class="break"></span><strong>用户信息</strong>
+						<span class="break"></span><strong>用户信息</strong>
 					</h2>
 				</div>
 
