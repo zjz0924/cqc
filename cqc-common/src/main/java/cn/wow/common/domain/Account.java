@@ -3,12 +3,14 @@ package cn.wow.common.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * 用户
  * @author zhenjunzhuo 
  * 2016-07-26
  */
-public class Account implements Serializable, MybatisVO{
+public class Account extends JpaEntity{
 	
 	private static final long serialVersionUID = 9009465862519388181L;
 	
@@ -62,6 +64,7 @@ public class Account implements Serializable, MybatisVO{
 		this.nickName = nickName;
 	}
 
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
@@ -100,5 +103,10 @@ public class Account implements Serializable, MybatisVO{
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+	
+	@JsonIgnore
+	public Serializable getPrimaryKey() {
+		return id;
 	}
 }

@@ -31,15 +31,15 @@ public class RoleServiceImpl implements RoleService{
     	return roleDao.selectOne(id);
     }
 
-    public int save(Role role){
+    public int save(String userName, Role role){
     	return roleDao.insert(role);
     }
 
-    public int update(Role role){
+    public int update(String userName, Role role){
     	return roleDao.update(role);
     }
 
-    public int deleteByPrimaryKey(Long id){
+    public int deleteByPrimaryKey(String userName, Long id){
     	return roleDao.deleteByPrimaryKey(id);
     }
 
@@ -48,21 +48,21 @@ public class RoleServiceImpl implements RoleService{
     	return roleDao.selectAllList(map);
     }
     
-    public void addRole(Role role, RolePermission rolePermission){
+    public void createRole(String userName, Role role, RolePermission rolePermission){
     	roleDao.insert(role);
     	
 		rolePermission.setRoleId(role.getId());
 		rolePermissionDao.insert(rolePermission);
     }
     
-    public void updateRole(Role role, RolePermission rolePermission){
+    public void updateRole(String userName, Role role, RolePermission rolePermission){
     	roleDao.update(role);
     	rolePermissionDao.update(rolePermission);
     }
     
-    public void deleteRole(Long roleId){
-    	roleDao.deleteByPrimaryKey(roleId);
-    	rolePermissionDao.deleteByPrimaryKey(roleId);
+    public void deleteRole(String userName, Role role){
+    	roleDao.deleteByPrimaryKey(role.getId());
+    	rolePermissionDao.deleteByPrimaryKey(role.getId());
     }
     
 }

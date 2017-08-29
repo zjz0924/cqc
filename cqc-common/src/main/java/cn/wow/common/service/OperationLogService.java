@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import cn.wow.common.domain.OperationLog;
-import cn.wow.common.domain.operationlog.ClientInfo;
-import cn.wow.common.domain.operationlog.OperationType;
-import cn.wow.common.domain.operationlog.ServiceType;
+import cn.wow.common.utils.operationlog.ClientInfo;
+import cn.wow.common.utils.operationlog.OperationType;
+import cn.wow.common.utils.operationlog.ServiceType;
 
 public interface OperationLogService {
 	

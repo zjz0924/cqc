@@ -16,11 +16,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.wow.common.domain.Account;
-import cn.wow.common.domain.operationlog.ClientInfo;
-import cn.wow.common.domain.operationlog.OperationType;
-import cn.wow.common.domain.operationlog.ServiceType;
 import cn.wow.common.service.AccountService;
 import cn.wow.common.service.OperationLogService;
+import cn.wow.common.utils.operationlog.ClientInfo;
+import cn.wow.common.utils.operationlog.OperationType;
+import cn.wow.common.utils.operationlog.ServiceType;
 import cn.wow.support.utils.Contants;
 
 public class FormAuthenticationExtendFilter extends FormAuthenticationFilter {

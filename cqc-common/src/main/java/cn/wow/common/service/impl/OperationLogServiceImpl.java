@@ -4,18 +4,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import cn.wow.common.dao.OperationLogDao;
-import cn.wow.common.domain.operationlog.ClientInfo;
 import cn.wow.common.domain.OperationLog;
-import cn.wow.common.domain.operationlog.OperationType;
-import cn.wow.common.domain.operationlog.ServiceType;
 import cn.wow.common.service.OperationLogService;
+import cn.wow.common.utils.operationlog.ClientInfo;
+import cn.wow.common.utils.operationlog.OperationType;
+import cn.wow.common.utils.operationlog.ServiceType;
+import cn.wow.common.utils.operationlog.annotation.OperationLogIgnore;
 import cn.wow.common.utils.pagination.PageHelperExt;
-import cn.wow.common.utils.pagination.PageMap;
 
 @Service
 @Transactional
@@ -31,6 +32,7 @@ public class OperationLogServiceImpl implements OperationLogService {
 		return operationLogDao.selectOne(id);
 	}
 
+	@OperationLogIgnore
 	public Long save(String theUserName, OperationType operationType, ServiceType serviceType, String jsonDetail) {
 		String clientIp = null;
 		String userAgent = null;
@@ -59,6 +61,7 @@ public class OperationLogServiceImpl implements OperationLogService {
 		return operationLog.getId();
 	}
 
+	@OperationLogIgnore
 	public void createOrUpdateUserClientInfo(String userName, ClientInfo clientInfo) {
 		if (userName != null && userName.trim().length() > 0 && clientInfo != null) {
 			// HashMap will overwrite the clientInfo record if the userName already exists

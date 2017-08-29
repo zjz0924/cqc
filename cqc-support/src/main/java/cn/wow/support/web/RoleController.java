@@ -78,7 +78,7 @@ public class RoleController extends AbstractController {
 		AjaxVO vo = new AjaxVO();
 
 		if (StringUtils.isNotBlank(id)) {
-			int num = roleService.deleteByPrimaryKey(Long.parseLong(id));
+			int num = roleService.deleteByPrimaryKey(getCurrentUserName(), Long.parseLong(id));
 
 			if (num > 0) {
 				getResponse(vo, Contants.SUC_DELETE);
@@ -138,7 +138,7 @@ public class RoleController extends AbstractController {
 					oldPermission = rolePermission.getPermission();
 					rolePermission.setPermission(permission);
 
-					roleService.updateRole(role, rolePermission);
+					roleService.updateRole(getCurrentUserName(), role, rolePermission);
 					logger.info("update role [ " + name + " ], old permission [ "+ oldPermission +" ] ,  new permission [ " + permission +" ]");
 				}
 			} else {
@@ -147,9 +147,10 @@ public class RoleController extends AbstractController {
 					vo.setMsg("角色名已存在");
 				}else{
 					role = new Role(name);
+					role.setPermission(permission);
 					rolePermission = new RolePermission(permission);
-
-					roleService.addRole(role, rolePermission);
+					
+					roleService.createRole(getCurrentUserName(), role, rolePermission);
 					logger.info("create role [ " + name + " ], the permission [ " + permission +" ]");
 				}
 			}
@@ -174,7 +175,8 @@ public class RoleController extends AbstractController {
 			List<Account> accountList = accountService.selectAllList(map);
 
 			if (accountList == null || accountList.size() < 1) {
-				roleService.deleteRole(roleId);
+				Role role = roleService.selectOne(roleId);
+				roleService.deleteRole(getCurrentUserName(), role);
 			} else {
 				vo.setSuccess(false);
 				vo.setMsg("删除失败，当前角色正在使用中");

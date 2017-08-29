@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
-import cn.wow.common.domain.operationlog.OperationType;
 import cn.wow.common.utils.JsonUtil;
 import cn.wow.common.utils.PropertyUtil;
+import cn.wow.common.utils.operationlog.OperationType;
 
 public class OpLogDetailCoder
 {
@@ -349,12 +349,11 @@ public class OpLogDetailCoder
       return entityType != null && entityType.startsWith(COLLECTION + TYPE_SEPERATOR);
    }
 
-   public static String getJobDetailString(String newJson, String oldJson, String errInfo, String objType, OperationType opt)
+   public static String getJobDetailString(String newJson, String oldJson, String objType, OperationType opt)
    {
       Map<String, String> map = new TreeMap<String, String>();
       map.put(KEY_ENTITY, newJson);
       map.put(KEY_OLDENTITY, oldJson);
-      map.put(KEY_ERROR, errInfo);
       map.put(KEY_ENTITYTYPE, objType);
       map.put(KEY_OPERATION, opt.getDisplayName());
       String str = JsonUtil.toJson(map);

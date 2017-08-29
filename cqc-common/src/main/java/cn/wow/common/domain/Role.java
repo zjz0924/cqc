@@ -2,13 +2,17 @@ package cn.wow.common.domain;
 
 import java.io.Serializable;
 
-public class Role implements Serializable, MybatisVO{
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+public class Role extends JpaEntity{
 	
 	private static final long serialVersionUID = 5632083155878693998L;
 
 	private Long id;
 
     private String name;
+    
+    private String permission;
 
     public Role(){
     	
@@ -33,4 +37,18 @@ public class Role implements Serializable, MybatisVO{
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
     }
+    
+    public String getPermission() {
+		return permission;
+	}
+
+	public void setPermission(String permission) {
+		this.permission = permission;
+	}
+
+	@JsonIgnore
+	public Serializable getPrimaryKey() {
+		return id;
+	}
+    
 }

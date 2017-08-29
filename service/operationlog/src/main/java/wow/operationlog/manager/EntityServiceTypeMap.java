@@ -7,7 +7,7 @@ import java.util.Map;
 
 import cn.wow.common.domain.Account;
 import cn.wow.common.domain.Role;
-import cn.wow.common.domain.operationlog.ServiceType;
+import cn.wow.common.utils.operationlog.ServiceType;
 
 public final class EntityServiceTypeMap {
 	private EntityServiceTypeMap() {
@@ -15,6 +15,9 @@ public final class EntityServiceTypeMap {
 	}
 
 	private static Map<String, ServiceType> typeMap = new HashMap<String, ServiceType>();
+	// 实体类查询的方法
+	private static Map<String, String> daoMap = new HashMap<String, String>();
+	
 	static {
 		initMap();
 	}
@@ -23,6 +26,11 @@ public final class EntityServiceTypeMap {
 		typeMap.clear();
 		typeMap.put(Account.class.getName(), ServiceType.ACCOUNT);
 		typeMap.put(Role.class.getName(), ServiceType.ROLE);
+		
+		//DAO 类型
+		daoMap.clear();
+		daoMap.put(Account.class.getName(), "cn.wow.common.dao.AccountDao.selectOne");
+		daoMap.put(Role.class.getName(), "cn.wow.common.dao.RoleDao.selectOne");
 	}
 
 	public static ServiceType getServiceType(Class<?> clazz) {
@@ -35,6 +43,14 @@ public final class EntityServiceTypeMap {
 
 	public static ServiceType getServiceType(String className) {
 		return typeMap.get(className);
+	}
+	
+	public static String getDaoType(Class<?> clazz) {
+		if (clazz != null) {
+			String className = clazz.getName();
+			return daoMap.get(className);
+		}
+		return null;
 	}
 
 	public static boolean contains(ServiceType type) {

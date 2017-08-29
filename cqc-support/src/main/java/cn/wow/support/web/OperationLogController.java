@@ -1,8 +1,12 @@
 package cn.wow.support.web;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import cn.wow.common.domain.OperationLog;
 import cn.wow.common.service.OperationLogService;
 import cn.wow.common.utils.pagination.PageMap;
@@ -53,7 +63,8 @@ public class OperationLogController extends AbstractController {
 		if (opeartionLogList != null && opeartionLogList.size() > 0) {
 			for (OperationLog operationLog : opeartionLogList) {
 				if (StringUtils.isNotBlank(operationLog.getDetail())) {
-					operationLog.setDetail(operationLog.getDetail().replaceAll("\\\\r\\\\n", "").replaceAll("\\\\", ""));
+					operationLog
+							.setDetail(operationLog.getDetail().replaceAll("\\\\r\\\\n", "").replaceAll("\\\\", ""));
 				}
 			}
 		}
@@ -71,9 +82,33 @@ public class OperationLogController extends AbstractController {
 
 	@RequestMapping(value = "/detail")
 	public String detail(HttpServletRequest httpServletRequest, Model model, Long id) {
-		OperationLog opeartionLog = operationLogService.selectOne(id);
+		OperationLog operationLog = operationLogService.selectOne(id);
 
-		model.addAttribute("opeartionLog", opeartionLog);
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			JsonNode root = mapper.readTree(operationLog.getDetail());
+
+			JsonNode entity = root.path("ENTITY");
+			JsonNode oldEntity = root.path("OLDENTITY");
+			JsonNode entityType = root.path("ENTITYTYPE");
+			JsonNode operation = root.path("OPERATION");
+			
+			System.out.println(entity.asText());
+			System.out.println(oldEntity.asText());
+			System.out.println(entityType.asText());
+			System.out.println(operation.asText());
+			
+			Map<String, String> map = new HashMap<String, String>();
+			map = mapper.readValue(oldEntity.asText(), new TypeReference<HashMap<String,String>>(){});  
+            System.out.println(map);  
+
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		model.addAttribute("opeartionLog", operationLog);
 		return "sys/operationlog/operationlog_detail";
 	}
 

@@ -1,4 +1,4 @@
-package wow.operationlog;
+package cn.wow.common.utils.operationlog.annotation;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

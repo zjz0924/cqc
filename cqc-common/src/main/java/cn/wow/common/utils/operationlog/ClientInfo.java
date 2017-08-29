@@ -1,4 +1,4 @@
-package cn.wow.common.domain.operationlog;
+package cn.wow.common.utils.operationlog;
 
 /**
  * 

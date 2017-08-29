@@ -48,4 +48,9 @@
 	</bean>
 	
 	
+	<!-- 配置SqlSessionTemplate,可在代码中直接注入 -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>  
+	
 </beans>

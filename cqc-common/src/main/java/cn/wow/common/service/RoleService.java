@@ -8,18 +8,18 @@ import cn.wow.common.domain.RolePermission;
 public interface RoleService {
     public Role selectOne(Long id);
 
-    public int save(Role role);
+    public int save(String userName, Role role);
 
-    public int update(Role role);
+    public int update(String userName, Role role);
 
-    public int deleteByPrimaryKey(Long id);
+    public int deleteByPrimaryKey(String userName, Long id);
 
     public List<Role> selectAllList(Map<String, Object> map);
     
-    public void addRole(Role role, RolePermission rolePermission);
+    public void createRole(String userName, Role role, RolePermission rolePermission);
     
-    public void updateRole(Role role, RolePermission rolePermission);
+    public void updateRole(String userName, Role role, RolePermission rolePermission);
     
-    public void deleteRole(Long roleId);
+    public void deleteRole(String userName, Role role);
 
 }
