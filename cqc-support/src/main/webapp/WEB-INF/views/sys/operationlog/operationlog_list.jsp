@@ -114,13 +114,13 @@
 
 								<tbody>
 									<c:forEach items="${dataList}" var="vo" varStatus="vst">
-										<tr>
+										<tr onclick="goTo('detail?id=${vo.id}')">
 											<td class="text-center text_size_14" style="width:6%;">${vst.index + 1}</td>
 											<td class="text-center text_size_14" style="width:8%;">${vo.userName}</td>
 											<td class="text-center text_size_14" style="width:8%;">${vo.type}</td>
 											<td class="text-center text_size_14" style="width:8%;">${vo.operation}</td>
 											<td class="text-center text_size_14" style="width:10%;">${vo.clientIp}</td>
-											<td class="text_size_14"><div class="detail"><a href="javascript:void(0)" onclick="goTo('detail?id=${vo.id}')">${vo.detail}</a></div></td>
+											<td class="text_size_14"><div class="detail">${vo.detail}</div></td>
 											<td class="text-center text_size_14" style="width:10%;">
 												<fmt:formatDate value='${vo.time}' type="date" pattern="yyyy-MM-dd hh:mm:ss" />
 											</td>

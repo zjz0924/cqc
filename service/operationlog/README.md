@@ -16,3 +16,4 @@
 1. **wow.operationlog.manager.ProvOperationLogAspect** 所有规定在这里设置
 
 2. 添加新的对象，要在 **EntityServiceTypeMap** 中加上对应的类名和Dao
+   要继承 JpaEntity 抽象类

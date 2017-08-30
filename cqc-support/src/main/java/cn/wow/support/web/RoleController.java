@@ -32,6 +32,8 @@ public class RoleController extends AbstractController {
 
 	private static Logger logger = LoggerFactory.getLogger(RoleController.class);
 
+	private final static String moduleName = Contants.ROLE;
+	
 	@Autowired
 	private RoleService roleService;
 	@Autowired

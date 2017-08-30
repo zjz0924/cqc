@@ -76,15 +76,43 @@
 						
 						<div class="data-row">
 							<span class="data-title">时间：</span>
-							<span class="data-content"><fmt:formatDate value='${opeartionLog.time}' type="date" pattern="yyyy-MM-dd hh:mm:ss" /></span>
+							<span class="data-content"><fmt:formatDate value='${opeartionLog.time}' type="date" pattern="yyyy-MM-dd HH:mm:ss" /></span>
 						</div>
 					</div>	
 					
 					<div style="margin-top:10px;">
 						<div style="font-weight:bold;">Detail Information</div>
 						
-					
-					
+						<c:if test="${not empty dataList}">
+							<table class="table table-bordered table-striped table-condensed table-hover" style="width: 70%;">
+								<tr>
+									<td>Field</td>
+									<td>Value</td>
+									
+									<c:if test="${operation == 'Update'}">
+										<td>Old Value</td>
+									</c:if>
+								</tr>
+								
+								<c:forEach items="${dataList}" var="vo" > 
+									<tr>
+										<td>${vo.name}</td>
+										<c:choose>
+											<c:when test="${operation == 'Update'}">
+												<td>${vo.newValue}</td>
+												<td>${vo.oldValue}</td>
+											</c:when>
+											<c:when test="${operation == 'Create'}">
+												<td>${vo.newValue}</td>
+											</c:when>
+											<c:otherwise>
+												<td>${vo.oldValue}</td>
+											</c:otherwise>
+										</c:choose>
+									</tr>
+								</c:forEach> 
+							</table>
+						</c:if>
 					</div>
 
 				</div>

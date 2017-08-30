@@ -8,12 +8,14 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import cn.wow.common.domain.RolePermission;
 import cn.wow.common.utils.AjaxVO;
 import cn.wow.support.utils.Contants;
 
@@ -196,8 +198,32 @@ public class AbstractController {
 		}
 	}
 
+	/**
+	 * 获取当前用户名称
+	 */
 	public String getCurrentUserName() {
 		return (String) SecurityUtils.getSubject().getPrincipal();
 	}
+	
+	/**
+	 * 获取当前页面的权限
+	 */
+	public String getPermission(HttpServletRequest request, String moduleName) {
+		RolePermission rolePermission = (RolePermission) request.getSession().getAttribute(Contants.CURRNET_PERMISSION);
+		String permission = "0";
 
+		if (rolePermission != null && StringUtils.isNotBlank(rolePermission.getPermission())) {
+			String[] array = rolePermission.getPermission().split(",");
+
+			for (String str : array) {
+				String[] vals = str.split("-");
+				if (moduleName.equals(vals[0])) {
+					permission = vals[1];
+					break;
+				}
+			}
+		}
+		return permission;
+	}
 }
+

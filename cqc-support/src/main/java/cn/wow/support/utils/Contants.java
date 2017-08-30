@@ -31,5 +31,11 @@ public class Contants {
 	public static final String VERIFYCODE = "verifyCode";
 	
 	public static final String CURRENT_ACCOUNT = "currentAccount";
+	public static final String CURRNET_PERMISSION = "currentPermission";
 	
+	
+	// Controller 别名
+	public static final String ACCOUNT = "account_manager";
+	public static final String ROLE = "role_manager";
+	public static final String OPERATIONLOG = "log_manager";
 }

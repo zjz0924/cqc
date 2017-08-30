@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.wow.common.domain.Account;
 import cn.wow.common.domain.Role;
 import cn.wow.common.service.AccountService;
@@ -36,6 +34,8 @@ import cn.wow.support.utils.Contants;
 public class AccountController extends AbstractController {
 
 	Logger logger = LoggerFactory.getLogger(AccountController.class);
+
+	private final static String moduleName = Contants.ACCOUNT;
 
 	@Autowired
 	private AccountService accountService;
@@ -75,7 +75,7 @@ public class AccountController extends AbstractController {
 		model.addAttribute("lock", lock);
 		model.addAttribute("startCreateTime", startCreateTime);
 		model.addAttribute("endCreateTime", endCreateTime);
-
+		model.addAttribute("permission", getPermission(httpServletRequest, moduleName));
 		return "sys/account_list";
 	}
 
@@ -153,8 +153,8 @@ public class AccountController extends AbstractController {
 		try {
 			if (StringUtils.isNotBlank(id)) {
 				Account account = accountService.selectOne(Long.parseLong(id));
-				
-				if(account != null){
+
+				if (account != null) {
 					int num = accountService.deleteByPrimaryKey(getCurrentUserName(), account);
 
 					if (num > 0) {
@@ -162,7 +162,7 @@ public class AccountController extends AbstractController {
 					} else {
 						getResponse(vo, Contants.FAIL_DELETE);
 					}
-				}else{
+				} else {
 					getResponse(vo, Contants.FAIL_DELETE);
 				}
 			} else {
@@ -281,4 +281,5 @@ public class AccountController extends AbstractController {
 		Map<String, Object> map = new PageMap(false);
 		return roleService.selectAllList(map);
 	}
+
 }

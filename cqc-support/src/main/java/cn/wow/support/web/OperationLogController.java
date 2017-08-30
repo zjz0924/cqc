@@ -1,12 +1,11 @@
 package cn.wow.support.web;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,15 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import cn.wow.common.domain.OperationLog;
 import cn.wow.common.service.OperationLogService;
+import cn.wow.common.utils.operationlog.FieldValue;
 import cn.wow.common.utils.pagination.PageMap;
+import cn.wow.support.utils.Contants;
 import wow.operationlog.manager.EntityServiceTypeMap;
 
 @Controller
@@ -31,6 +29,8 @@ public class OperationLogController extends AbstractController {
 
 	private static Logger logger = LoggerFactory.getLogger(OperationLogController.class);
 
+	private final static String moduleName = Contants.OPERATIONLOG;
+	
 	@Autowired
 	private OperationLogService operationLogService;
 
@@ -82,34 +82,71 @@ public class OperationLogController extends AbstractController {
 
 	@RequestMapping(value = "/detail")
 	public String detail(HttpServletRequest httpServletRequest, Model model, Long id) {
+		Map<String, String> entityMap = new HashMap<String, String>();
+		Map<String, String> oldEntityMap = new HashMap<String, String>();
+		List<FieldValue> dataList = new ArrayList<FieldValue>();
+
 		OperationLog operationLog = operationLogService.selectOne(id);
-
-		ObjectMapper mapper = new ObjectMapper();
 		try {
+			ObjectMapper mapper = new ObjectMapper();
 			JsonNode root = mapper.readTree(operationLog.getDetail());
-
 			JsonNode entity = root.path("ENTITY");
 			JsonNode oldEntity = root.path("OLDENTITY");
-			JsonNode entityType = root.path("ENTITYTYPE");
 			JsonNode operation = root.path("OPERATION");
-			
-			System.out.println(entity.asText());
-			System.out.println(oldEntity.asText());
-			System.out.println(entityType.asText());
-			System.out.println(operation.asText());
-			
-			Map<String, String> map = new HashMap<String, String>();
-			map = mapper.readValue(oldEntity.asText(), new TypeReference<HashMap<String,String>>(){});  
-            System.out.println(map);  
 
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			entityMap = mapper.readValue(entity.asText(), new TypeReference<HashMap<String, String>>() {});
+			oldEntityMap = mapper.readValue(oldEntity.asText(), new TypeReference<HashMap<String, String>>() {});
+
+			dataList = toFacade(entityMap, oldEntityMap);
+			
+			model.addAttribute("operation", operation.asText());
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 
 		model.addAttribute("opeartionLog", operationLog);
+		model.addAttribute("dataList", dataList);
 		return "sys/operationlog/operationlog_detail";
+	}
+
+	public List<FieldValue> toFacade(Map<String, String> entityMap, Map<String, String> oldEntityMap) {
+		List<FieldValue> dataList = new ArrayList<FieldValue>();
+
+		if (entityMap != null) {
+			Iterator<Map.Entry<String, String>> entityEntries = entityMap.entrySet().iterator();
+			while (entityEntries.hasNext()) {
+				Map.Entry<String, String> entry = entityEntries.next();
+
+				FieldValue val = new FieldValue();
+				val.setName(entry.getKey());
+				val.setNewValue(entry.getValue());
+				dataList.add(val);
+			}
+		}
+
+		if (oldEntityMap != null) {
+			Iterator<Map.Entry<String, String>> oldEntityEntries = oldEntityMap.entrySet().iterator();
+			while (oldEntityEntries.hasNext()) {
+				Map.Entry<String, String> entry = oldEntityEntries.next();
+
+				boolean hasVal = false;
+				for (FieldValue val : dataList) {
+					if (val.getName().equals(entry.getKey())) {
+						val.setOldValue(entry.getValue());
+						hasVal = true;
+						break;
+					}
+				}
+
+				if (!hasVal) {
+					FieldValue val = new FieldValue();
+					val.setName(entry.getKey());
+					val.setOldValue(entry.getValue());
+					dataList.add(val);
+				}
+			}
+		}
+		return dataList;
 	}
 
 }

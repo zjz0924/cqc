@@ -5,15 +5,8 @@ import java.io.Serializable;
 public enum OperationType implements Serializable {
 
    CREATE("Create", LogLevel.ONLYNEW), UPDATE("Update", LogLevel.BOTH),
-   SCHEDULE("Schedule"),SCHEDULED("Scheduled"),
    DELETE("Delete", LogLevel.ONLYOLD), SAVE("Save", LogLevel.BOTH),
-   MOVE("Move", LogLevel.BOTH),
-   START("Start"), STOP("Stop"), RESTART("Restart"), 
-   START_SERVER("Start on Server Level"), STOP_SERVER("Stop on Server Level"), RESTART_SERVER("Restart on Server Level"),
-   START_CLUSTER("Start on Cluster Level"), STOP_CLUSTER("Stop on Cluster Level"), RESTART_CLUSTER("Restart on Cluster Level"), 
-   IMPORT("Import"), EXPORT("Export"), 
-   LOGIN("Login"), LOGOUT("Logout"), SYNC("Sync", LogLevel.BOTH),
-   SAVE_SETTINGS("Save Settings"), // for SAT only
+   LOGIN("Login"), LOGOUT("Logout"),
    // will not use in code
    UNKNOWN("Unknown");
 

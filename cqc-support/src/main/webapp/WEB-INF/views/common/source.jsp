@@ -11,3 +11,19 @@
 <script type="text/javascript" src="${ctx}/resources/js/artDialog4.1.7/artDialog.source.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/artDialog4.1.7/jquery.artDialog.source.js?skin=idialog"></script>
 <script type="text/javascript" src="${ctx}/resources/js/artDialog4.1.7/plugins/iframeTools.source.js"></script>
+
+
+<script type="text/javascript">
+	$(function(){
+		var permission = "${permission}";
+	
+		if(permission != "" && permission != null){
+			if(permission == "2"){   
+				$(":button[btnType='readBtn']").show();
+				$(":button[btnType='editBtn']").show();
+			}else if(permission == "1"){
+				$(":button[btnType='editBtn']").show();
+			}
+		}
+	});
+</script>
