@@ -22,6 +22,13 @@
 			display:inline-block;
 			width: 120px;
 		}
+		
+		.table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td {
+			padding: 5px;
+			text-align:left;
+			font-weight: normal;
+			font-size: 14px;
+		}
 	</style>
 </head>
 
@@ -85,14 +92,16 @@
 						
 						<c:if test="${not empty dataList}">
 							<table class="table table-bordered table-striped table-condensed table-hover" style="width: 70%;">
-								<tr>
-									<td>Field</td>
-									<td>Value</td>
-									
-									<c:if test="${operation == 'Update'}">
-										<td>Old Value</td>
-									</c:if>
-								</tr>
+								<thead>
+									<tr>
+										<th>Field</th>
+										<th>Value</th>
+										
+										<c:if test="${operation == 'Update'}">
+											<th>Old Value</th>
+										</c:if>
+									</tr>
+								</thead>
 								
 								<c:forEach items="${dataList}" var="vo" > 
 									<tr>

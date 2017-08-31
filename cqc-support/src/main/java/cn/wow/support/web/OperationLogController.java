@@ -3,8 +3,11 @@ package cn.wow.support.web;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -18,9 +21,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cn.wow.common.domain.OperationLog;
 import cn.wow.common.service.OperationLogService;
+import cn.wow.common.utils.JsonUtil;
 import cn.wow.common.utils.operationlog.FieldValue;
 import cn.wow.common.utils.pagination.PageMap;
 import cn.wow.support.utils.Contants;
+import wow.operationlog.OpLogDetailCoder;
 import wow.operationlog.manager.EntityServiceTypeMap;
 
 @Controller
@@ -30,7 +35,7 @@ public class OperationLogController extends AbstractController {
 	private static Logger logger = LoggerFactory.getLogger(OperationLogController.class);
 
 	private final static String moduleName = Contants.OPERATIONLOG;
-	
+
 	@Autowired
 	private OperationLogService operationLogService;
 
@@ -82,24 +87,42 @@ public class OperationLogController extends AbstractController {
 
 	@RequestMapping(value = "/detail")
 	public String detail(HttpServletRequest httpServletRequest, Model model, Long id) {
-		Map<String, String> entityMap = new HashMap<String, String>();
-		Map<String, String> oldEntityMap = new HashMap<String, String>();
 		List<FieldValue> dataList = new ArrayList<FieldValue>();
 
 		OperationLog operationLog = operationLogService.selectOne(id);
 		try {
-			ObjectMapper mapper = new ObjectMapper();
-			JsonNode root = mapper.readTree(operationLog.getDetail());
-			JsonNode entity = root.path("ENTITY");
-			JsonNode oldEntity = root.path("OLDENTITY");
-			JsonNode operation = root.path("OPERATION");
+			String detailStr = operationLog.getDetail();
+			Map<String, String> strMap = null;
 
-			entityMap = mapper.readValue(entity.asText(), new TypeReference<HashMap<String, String>>() {});
-			oldEntityMap = mapper.readValue(oldEntity.asText(), new TypeReference<HashMap<String, String>>() {});
+			if (!StringUtils.isEmpty(detailStr)) {
+				strMap = JsonUtil.fromJson(detailStr);
+			}
 
-			dataList = toFacade(entityMap, oldEntityMap);
-			
-			model.addAttribute("operation", operation.asText());
+			if (strMap != null && strMap.containsKey(OpLogDetailCoder.KEY_ENTITYTYPE)) {
+				Map<String, String> oldJsonDetail = null;
+				Map<String, String> newJsonDetail = null;
+				
+				boolean isCollection = OpLogDetailCoder.isCollection(strMap.get(OpLogDetailCoder.KEY_ENTITYTYPE));
+				if (strMap.get(OpLogDetailCoder.KEY_OLDENTITY) != null) {
+					if (isCollection) {
+						oldJsonDetail = new HashMap<String, String>();
+						oldJsonDetail.put("Entities", strMap.get(OpLogDetailCoder.KEY_OLDENTITY));
+					} else {
+						oldJsonDetail = onlyParseFirstLevel(JsonUtil.fromJson(strMap.get(OpLogDetailCoder.KEY_OLDENTITY), Map.class, String.class, Object.class));
+					}
+				}
+				if (strMap.get(OpLogDetailCoder.KEY_ENTITY) != null) {
+					if (isCollection) {
+						newJsonDetail = new HashMap<String, String>();
+						newJsonDetail.put("Entities", strMap.get(OpLogDetailCoder.KEY_ENTITY));
+					} else {
+						newJsonDetail = onlyParseFirstLevel(JsonUtil.fromJson(strMap.get(OpLogDetailCoder.KEY_ENTITY), Map.class, String.class, Object.class));
+					}
+				}
+				
+				dataList = toFacade(newJsonDetail, oldJsonDetail);
+				model.addAttribute("operation", strMap.get(OpLogDetailCoder.KEY_OPERATION));
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -147,6 +170,22 @@ public class OperationLogController extends AbstractController {
 			}
 		}
 		return dataList;
+	}
+
+	private Map<String, String> onlyParseFirstLevel(Map<String, Object> srcMap) {
+		Map<String, String> result = new LinkedHashMap<String, String>();
+		if (null == srcMap) {
+			return result;
+		}
+		for (Entry<String, Object> en : srcMap.entrySet()) {
+			Object v = en.getValue();
+			if (v != null && v instanceof String) {
+				result.put(en.getKey(), (String) v);
+			} else {
+				result.put(en.getKey(), JsonUtil.toJson(v));
+			}
+		}
+		return result;
 	}
 
 }
