@@ -142,7 +142,7 @@
                 /**/**.svg = anon
                 /**/**.woff = anon
                 /login = authc
-                /loginout = logout
+                /loginout = anon
                 /checkLogin = anon
                 /verifycode = anon
                 /checkverify = anon

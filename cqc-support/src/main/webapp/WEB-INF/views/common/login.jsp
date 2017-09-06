@@ -40,7 +40,7 @@
 			<div id="content" class="col-sm-12 full">
 				<div class="row">
 					<div class="login-box">
-						<div class="header">
+						<div class="header" style="font-size: 20px;letter-spacing: .15em;font-weight: 700;">
 							后台管理系统
 						</div>
 					

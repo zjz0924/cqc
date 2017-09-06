@@ -8,11 +8,11 @@ body {
   color: #4c4f53!important; 
 }
 a {
-  color: #1985ac;
+  color: #fafafa;
 }
 a:hover,
 a a:focus {
-  color: #167495;
+  color: #fafafa;
 }
 h1 {
   font-size: 32px;
@@ -492,7 +492,7 @@ border-color : #79859b;
 =================================================================== */
 .navbar {
   margin: 0;
-  padding: 0 0 0 235px;
+  padding: 0 0 0 30px;
   height: 60px;
   border: none;
   border-bottom: 1px solid #f2f2f2;
@@ -501,7 +501,7 @@ border-color : #79859b;
   border-radius: 0px;
   color: #414141;
   line-height: 60px;
-  background: #ffffff;  
+  background: #1c75bf;  
   position: fixed;
   width: 100%;
   z-index: 11;
@@ -568,14 +568,14 @@ border-color : #79859b;
   margin: 22px 0 0 0;
   width: 32px;
   text-align: center;
-  color: #c8c8c8;
+  color: #fafafa;
   font-size: 18px;
 }
 .navbar .navbar-nav li a:hover {
   background-color: none;
 }
 .navbar .navbar-nav li a i:hover {
-  color: #75b9e6;
+  color: #fafafa;
   font-size: 25px;
 }
 .navbar .navbar-nav li a .badge {
@@ -592,7 +592,7 @@ border-color : #79859b;
 }
 .navbar .navbar-nav li .dropdown-toggle:active,
 .navbar .navbar-nav li .open .dropdown-toggle:active {
-  background-color: #f1f1f1 !important;
+  background-color: #2577ff !important;
 }
 .navbar .navbar-nav li .dropdown-menu {
   margin-top: 3px;
@@ -768,10 +768,10 @@ border-color : #79859b;
 /* Sidebar
 =================================================================== */
 .sidebar {
-  background: #181d20;  
+  background: #fafafa;  
   color: #cccccc;
   position: fixed;
-  top: 0;
+  top: 59px;
   left: 0;
   height: 100%;
   width: 240px;
@@ -779,7 +779,7 @@ border-color : #79859b;
   overflow: hidden;
 }
 .sidebar a {
-  color: #848788;
+  color: #638399;
 }
 .sidebar .sidebar-header {
   padding: 10px;
@@ -846,29 +846,30 @@ border-color : #79859b;
 .sidebar ul.nav.nav-sidebar ul.active a,
 .sidebar ul.nav.nav-sidebar li.active a,
 .sidebar ul.nav.nav-sidebar ul.opened {
-  background: #d95043;
-  color: #fff;
+  background: #fafafa;
+  color: #31414c;
 }
 .sidebar ul.nav.nav-sidebar li a {
   line-height: 13px;
   font-size: 13px;
-  font-weight: 400;
   border: 1px solid transparent;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
+  letter-spacing: .025em;
+  font-weight: 600;
 }
 .sidebar ul.nav.nav-sidebar li a.active,
 .sidebar ul.nav.nav-sidebar li a:hover {
   background: transparent;
-  color: #fff;
+  color: #31414c;
 }
 .sidebar ul.nav.nav-sidebar li a i {
   width: 30px;
   text-align: center;
   margin: 0 8px 0 0;
   font-size: 16px;
-  color: #a6a6a6;
+  color: #1c75bf;
 }
 .sidebar ul.nav.nav-sidebar li a span.fa {
   position: absolute;
@@ -877,7 +878,7 @@ border-color : #79859b;
 }
 .sidebar ul.nav.nav-sidebar li ul {
   display: none;
-  background: #181d20;
+  background: #fafafa;
   list-style: none;
   padding: 5px 0;
 }
@@ -1086,6 +1087,7 @@ body.sidebar-hide .sidebar {
   border-radius: 0;
   text-shadow: none;
   color: #484848;
+  border-radius: 2px;
 }
 .btn i {
   margin-top: 2px;
@@ -1418,7 +1420,6 @@ fieldset[disabled] .form-control {
   text-align: center;
 }
 select {
-  background: #f5f5f5 url("../img/select.png") no-repeat !important;
   background-size: 24px 20px !important;
   background-position: right center !important;
   -webkit-border-radius: 2px !important;
@@ -1432,7 +1433,6 @@ select {
   border: none;
   outline: none;
   display: inline-block;
-  -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   cursor: pointer;
@@ -2508,7 +2508,7 @@ ul.profile-details li div i {
 }
 .login-box .header,
 .register-box .header {
-  background: #414141;
+  background: #1976D2;
   color: white;
   text-align: center;
   margin: -20px -20px 20px -20px;
@@ -2773,3 +2773,21 @@ ul.profile-details li div i {
 @media (min-width: 1200px) {
   
 }
+
+.navbar-header-title{
+	font-size: 18px;
+    color: #fafafa;
+    letter-spacing: .15em;
+    font-family: Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 600;
+}
+
+.breadcrumb a{
+	color: #4c4f53;
+}
+
+.breadcrumb a:hover{
+	text-decoration:none;
+}
+
+

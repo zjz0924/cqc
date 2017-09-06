@@ -89,10 +89,6 @@
 		    padding: 0;
 		}
 		
-		.row{
-			display: table-row;
-		}
-		
 		.permission{
 			border:1px solid #A3A3A3;
 			border-left:0px;
@@ -264,20 +260,22 @@
 		}
 		
 		function deleteRole(roleId){
-			$.ajax({
-				url: "${ctx}/role/deleteRole?date=" + new Date,
-				data: {
-					roleId: roleId
-				},
-				success: function(data){
-					if(data.success){
-						tipMsg(data.msg, function(){
-							window.location.reload();
-						});
-					}else{
-						errorMsg(data.msg);
+			art.dialog.confirm("是否确定删除当前角色？", function () {
+				$.ajax({
+					url: "${ctx}/role/deleteRole?date=" + new Date,
+					data: {
+						roleId: roleId
+					},
+					success: function(data){
+						if(data.success){
+							tipMsg(data.msg, function(){
+								window.location.reload();
+							});
+						}else{
+							errorMsg(data.msg);
+						}
 					}
-				}
+				});
 			});
 		}
 		

@@ -24,8 +24,6 @@
 		    -webkit-line-clamp: 3; /** 显示的行数 **/
 		    overflow: hidden; 
 		}
-		
-		a:hover{text-decoration:none}
 	</style>
 </head>
 

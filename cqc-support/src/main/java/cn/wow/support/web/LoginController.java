@@ -20,12 +20,17 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import cn.wow.common.service.OperationLogService;
 import cn.wow.common.utils.VerifyCodeUtils;
+import cn.wow.common.utils.operationlog.OperationType;
+import cn.wow.common.utils.operationlog.ServiceType;
 
 /**
  * 登录控制器
@@ -34,6 +39,9 @@ import cn.wow.common.utils.VerifyCodeUtils;
 @Controller
 @RequestMapping(value = "")
 public class LoginController {
+	
+	@Autowired
+	private OperationLogService operationLogService;
 	
 	Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
@@ -170,9 +178,14 @@ public class LoginController {
 	@RequestMapping(value = "/loginout")
 	public String loginout(HttpServletRequest request, HttpServletResponse response){
 		Subject subject = SecurityUtils.getSubject();
+		String username = (String) SecurityUtils.getSubject().getPrincipal();
+		
 		if (subject.isAuthenticated()) {
 			subject.logout(); // session 会销毁，在SessionListener监听session销毁，清理权限缓存
 		}
+		
+		// 添加日志
+		operationLogService.save(username, OperationType.LOGOUT, ServiceType.ACCOUNT, "");
 		return "redirect:/login";
 	}
 }

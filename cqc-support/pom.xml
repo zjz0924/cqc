@@ -370,14 +370,6 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<distributionManagement>
-		<site>
-			<id>mysite</id>
-			<name>My Site</name>
-			<url>http://server.example.com/htdocs/site/${project.artifactId}/</url>
-		</site>
-	</distributionManagement>
-
 	<build>
 		<plugins>
 			<!-- jetty插件 -->

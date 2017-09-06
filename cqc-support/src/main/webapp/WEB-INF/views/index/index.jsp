@@ -22,8 +22,6 @@
 					$(this).height(height);
 				});
 				
-				//需要使用openFrame随便打开个页面，不然退出不会有效果（bug）
-				openFrame("main");
 				// 自动打开第一个菜单 
 				autoOpen();
 			});
@@ -64,8 +62,11 @@
 <body>
 	<!-- start: Header -->
 	<div class="navbar" role="navigation">
+		<div class="navbar-header" id="navbar-header-title">
+			<span class="navbar-header-title">后台管理系统</span>
+		</div>
 	
-		<div class="container-fluid">		
+		<div class="container-fluid">
 			<ul class="nav navbar-nav navbar-actions navbar-left">
 				<li class="visible-md visible-lg"><a href="javascript:void(0)" id="main-menu-toggle"><i class="fa fa-th-large"></i></a></li>
 				<li class="visible-xs visible-sm"><a href="javascript:void(0)" id="sidebar-menu"><i class="fa fa-navicon"></i></a></li>			
@@ -73,7 +74,7 @@
 			
 	        <ul class="nav navbar-nav navbar-right">
 				<li class="dropdown visible-md visible-lg">
-	        		<a href="#" class="dropdown-toggle" data-toggle="dropdown">${currentAccount.userName}</a>
+	        		<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="font-weight: 600">${currentAccount.userName}</a>
 	        		<ul class="dropdown-menu">
 						<li class="dropdown-menu-header">
 							<strong>账号管理</strong>
@@ -94,9 +95,6 @@
 			<!-- start: Main Menu -->
 			<div class="sidebar ">
 				<div class="sidebar-collapse">
-					<div class="sidebar-header t-center">
-                        <span style="font-size:20px;font-weight:bold;color:white;">后台管理系统</span>
-                    </div>										
 					<div class="sidebar-menu">
 						<ul class="nav nav-sidebar">
 							<c:forEach items="${menuList}" var="vo">
