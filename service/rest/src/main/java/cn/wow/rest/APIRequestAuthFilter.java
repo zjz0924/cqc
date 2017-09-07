@@ -11,11 +11,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.NamedThreadLocal;
-
 import cn.wow.rest.mapper.ApiExceptionMapper;
 import cn.wow.rest.model.User;
 
@@ -48,7 +46,7 @@ public class APIRequestAuthFilter implements Filter
 
    }
 
-   private static final Log LOGGER = LogFactory.getLog(ApiExceptionMapper.class);
+   private static final Logger LOGGER = LoggerFactory.getLogger(ApiExceptionMapper.class);
 
    private static final String SESSION_LAST_ACCESS_API_TIME = "SESSION_LAST_ACCESS_API_TIME";
 

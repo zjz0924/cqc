@@ -168,6 +168,11 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-joda</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-base</artifactId>
+		</dependency>
 	</dependencies>
 
 	<!-- 引入父项目中的version定义 -->

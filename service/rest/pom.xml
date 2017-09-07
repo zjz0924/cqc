@@ -6,24 +6,24 @@
 	<artifactId>cqc-rest-service</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
-
 	<name>Cqc North Bound API service</name>
+
+	<parent>
+        <groupId>cqc.service</groupId>
+        <artifactId>cqc-service</artifactId>
+        <version>1.0.0</version>
+    </parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- jersey 2 -->
 		<jersey.version>2.22.2</jersey.version>
-		<commons.logging.version>1.2</commons.logging.version>
-		<!-- jackson -->
-		<jackson.version>2.7.0</jackson.version>
-		<spring.version>4.1.6.RELEASE</spring.version>
 	</properties>
 
 	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
@@ -33,18 +33,17 @@
 	</build>
 
 	<dependencies>
+		
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
+            <groupId>cqc.common</groupId>
+            <artifactId>cqc-common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 		
 		<!-- spring start -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>commons-logging</groupId>
@@ -56,37 +55,31 @@
 		<dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
         </dependency>
         
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		
 		<dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
-            <version>${spring.version}</version>
         </dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		
 		<dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
-            <version>${spring.version}</version>
         </dependency>
         
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
-            <version>${spring.version}</version>
         </dependency>
 		<!-- spring end -->
 
@@ -123,38 +116,27 @@
 		</dependency>
         <!-- jersey configuration -->
 
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>${commons.logging.version}</version>
-		</dependency>
-
 		<!-- JACKSON 2 -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.jaxrs</groupId>
 			<artifactId>jackson-jaxrs-json-provider</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.jaxrs</groupId>
 			<artifactId>jackson-jaxrs-base</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
+		</dependency> -->
 		<!-- JACKSON 2 -->
 		
 		<dependency>
