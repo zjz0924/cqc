@@ -1,0 +1,22 @@
+1. java.lang.ClassNotFoundException: org.glassfish.jersey.servlet.ServletContainer
+  右键项目-> Properties -> Deployment Assembly -> Add -> Project -> 选项 wow-rest-service 项目
+  
+2. 导入项目后，如果代码报错，注意 Java 的版本
+
+3. 只要在entity上配置上适当的注解，会自动去检查数据的合法性
+
+4. 项目结构
+	1. wow-rest-service：主要实现项目，会打包成jar包
+	2. wow-jersy: 运行项目，普通的web项目
+	   通过servlet和filter来进行配置(看web.xml配置)
+	
+5. 访问 http://ip:port/api/path名称/  (api在 wow-jersy 的web.xml文件中配置的)
+
+
+APIRequestAuthFilter：权限过滤器，用来进行权限控制
+RestApplication: 用来注册一些功能类
+
+api 访问的参数： 
+Content-type: application/json   
+Authorization:	Basic YWRtaW46d2Fwd2FwMTI=
+（YWRtaW46d2Fwd2FwMTI= 是 用户名:密码 用来base64加密而成）

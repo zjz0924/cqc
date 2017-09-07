@@ -1,4 +1,4 @@
-package wow.operationlog.manager;
+package cn.wow.operationlog.manager;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import cn.wow.common.domain.JpaEntity;
 import cn.wow.common.service.OperationLogService;
 import cn.wow.common.utils.JsonUtil;
@@ -29,8 +30,8 @@ import cn.wow.common.utils.operationlog.OperationType;
 import cn.wow.common.utils.operationlog.ServiceType;
 import cn.wow.common.utils.operationlog.annotation.OperationLogIgnore;
 import cn.wow.common.utils.operationlog.annotation.OperationLogNeeded;
-import wow.operationlog.OpLogDetailCoder;
-import wow.operationlog.autolog.AutoLogAdapter;
+import cn.wow.operationlog.OpLogDetailCoder;
+import cn.wow.operationlog.autolog.AutoLogAdapter;
 
 @Aspect
 @Component

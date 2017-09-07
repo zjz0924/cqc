@@ -1,4 +1,4 @@
-package wow.operationlog;
+package cn.wow.operationlog;
 
 import java.io.Serializable;
 

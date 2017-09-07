@@ -42,6 +42,13 @@
             <artifactId>cqc-operationlog-service</artifactId>
             <version>1.0.0</version>
         </dependency>
+        
+        <!-- rest -->
+		<dependency>
+            <groupId>cqc.service</groupId>
+            <artifactId>cqc-rest-service</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
 		<!-- spring -->
 		<dependency>

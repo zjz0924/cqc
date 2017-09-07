@@ -16,6 +16,7 @@
 
     <modules>
         <module>operationlog</module>
+		<module>rest</module>
     </modules>
 
 </project>

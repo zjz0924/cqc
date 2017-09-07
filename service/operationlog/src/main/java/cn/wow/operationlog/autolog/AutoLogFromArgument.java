@@ -1,8 +1,8 @@
-package wow.operationlog.autolog;
+package cn.wow.operationlog.autolog;
 
 import javax.inject.Named;
 
-import wow.operationlog.OperatorInfo;
+import cn.wow.operationlog.OperatorInfo;
 
 /**
  * create/update/delete(String clusterId, String userName [, String shortName] , JpaEntity entity)

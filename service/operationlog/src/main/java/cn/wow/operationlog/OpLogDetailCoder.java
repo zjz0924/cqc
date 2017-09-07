@@ -1,4 +1,4 @@
-package wow.operationlog;
+package cn.wow.operationlog;
 
 import java.util.ArrayList;
 import java.util.Map;

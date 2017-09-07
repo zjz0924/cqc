@@ -146,6 +146,7 @@
                 /checkLogin = anon
                 /verifycode = anon
                 /checkverify = anon
+                /api/* = anon
                 /**/* = user,sysUser
             </value>
         </property>
